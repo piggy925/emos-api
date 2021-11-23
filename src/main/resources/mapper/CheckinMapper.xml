@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.mumu.emos.api.db.dao.CheckinMapper">
+    <resultMap id="BaseResultMap" type="com.mumu.emos.api.db.pojo.Checkin">
+        <!--@mbg.generated-->
+        <!--@Table tb_checkin-->
+        <id column="id" jdbcType="INTEGER" property="id"/>
+        <result column="user_id" jdbcType="INTEGER" property="userId"/>
+        <result column="address" jdbcType="VARCHAR" property="address"/>
+        <result column="country" jdbcType="VARCHAR" property="country"/>
+        <result column="province" jdbcType="VARCHAR" property="province"/>
+        <result column="city" jdbcType="VARCHAR" property="city"/>
+        <result column="district" jdbcType="VARCHAR" property="district"/>
+        <result column="status" jdbcType="TINYINT" property="status"/>
+        <result column="risk" jdbcType="INTEGER" property="risk"/>
+        <result column="date" jdbcType="DATE" property="date"/>
+        <result column="create_time" jdbcType="TIMESTAMP" property="createTime"/>
+    </resultMap>
+    <sql id="Base_Column_List">
+        <!--@mbg.generated-->
+        id, user_id, address, country, province, city, district, `status`, risk, `date`,
+        create_time
+    </sql>
+</mapper>

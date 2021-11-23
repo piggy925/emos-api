@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.mumu.emos.api.db.dao.LeaveMapper">
+    <resultMap id="BaseResultMap" type="com.mumu.emos.api.db.pojo.Leave">
+        <!--@mbg.generated-->
+        <!--@Table tb_leave-->
+        <id column="id" jdbcType="INTEGER" property="id"/>
+        <result column="user_id" jdbcType="INTEGER" property="userId"/>
+        <result column="reason" jdbcType="VARCHAR" property="reason"/>
+        <result column="start" jdbcType="TIMESTAMP" property="start"/>
+        <result column="end" jdbcType="TIMESTAMP" property="end"/>
+        <result column="days" jdbcType="VARCHAR" property="days"/>
+        <result column="type" jdbcType="TINYINT" property="type"/>
+        <result column="status" jdbcType="TINYINT" property="status"/>
+        <result column="instance_id" jdbcType="VARCHAR" property="instanceId"/>
+        <result column="create_time" jdbcType="TIMESTAMP" property="createTime"/>
+    </resultMap>
+    <sql id="Base_Column_List">
+        <!--@mbg.generated-->
+        id, user_id, reason, `start`, `end`, `days`, `type`, `status`, instance_id, create_time
+    </sql>
+</mapper>

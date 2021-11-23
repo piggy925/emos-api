@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.mumu.emos.api.db.dao.DeptMapper">
+    <resultMap id="BaseResultMap" type="com.mumu.emos.api.db.pojo.Dept">
+        <!--@mbg.generated-->
+        <!--@Table tb_dept-->
+        <id column="id" jdbcType="INTEGER" property="id"/>
+        <result column="dept_name" jdbcType="VARCHAR" property="deptName"/>
+        <result column="tel" jdbcType="VARCHAR" property="tel"/>
+        <result column="email" jdbcType="VARCHAR" property="email"/>
+        <result column="desc" jdbcType="VARCHAR" property="desc"/>
+    </resultMap>
+    <sql id="Base_Column_List">
+        <!--@mbg.generated-->
+        id, dept_name, tel, email, `desc`
+    </sql>
+</mapper>

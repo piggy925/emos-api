@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.mumu.emos.api.db.dao.ReimMapper">
+    <resultMap id="BaseResultMap" type="com.mumu.emos.api.db.pojo.Reim">
+        <!--@mbg.generated-->
+        <!--@Table tb_reim-->
+        <id column="id" jdbcType="INTEGER" property="id"/>
+        <result column="user_id" jdbcType="INTEGER" property="userId"/>
+        <result column="content" jdbcType="VARCHAR" property="content"/>
+        <result column="amount" jdbcType="DECIMAL" property="amount"/>
+        <result column="anleihen" jdbcType="DECIMAL" property="anleihen"/>
+        <result column="balance" jdbcType="DECIMAL" property="balance"/>
+        <result column="type_id" jdbcType="TINYINT" property="typeId"/>
+        <result column="status" jdbcType="TINYINT" property="status"/>
+        <result column="instance_id" jdbcType="VARCHAR" property="instanceId"/>
+        <result column="create_time" jdbcType="TIMESTAMP" property="createTime"/>
+    </resultMap>
+    <sql id="Base_Column_List">
+        <!--@mbg.generated-->
+        id, user_id, content, amount, anleihen, balance, type_id, `status`, instance_id,
+        create_time
+    </sql>
+</mapper>

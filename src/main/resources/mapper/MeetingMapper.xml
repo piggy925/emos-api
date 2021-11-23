@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.mumu.emos.api.db.dao.MeetingMapper">
+    <resultMap id="BaseResultMap" type="com.mumu.emos.api.db.pojo.Meeting">
+        <!--@mbg.generated-->
+        <!--@Table tb_meeting-->
+        <id column="id" jdbcType="BIGINT" property="id"/>
+        <result column="uuid" jdbcType="VARCHAR" property="uuid"/>
+        <result column="title" jdbcType="VARCHAR" property="title"/>
+        <result column="creator_id" jdbcType="BIGINT" property="creatorId"/>
+        <result column="date" jdbcType="DATE" property="date"/>
+        <result column="place" jdbcType="VARCHAR" property="place"/>
+        <result column="start" jdbcType="TIME" property="start"/>
+        <result column="end" jdbcType="TIME" property="end"/>
+        <result column="type" jdbcType="SMALLINT" property="type"/>
+        <result column="members" jdbcType="VARCHAR" property="members"/>
+        <result column="desc" jdbcType="VARCHAR" property="desc"/>
+        <result column="instance_id" jdbcType="VARCHAR" property="instanceId"/>
+        <result column="present" jdbcType="VARCHAR" property="present"/>
+        <result column="unpresent" jdbcType="VARCHAR" property="unpresent"/>
+        <result column="status" jdbcType="SMALLINT" property="status"/>
+        <result column="create_time" jdbcType="TIMESTAMP" property="createTime"/>
+    </resultMap>
+    <sql id="Base_Column_List">
+        <!--@mbg.generated-->
+        id, uuid, title, creator_id, `date`, place, `start`, `end`, `type`, members, `desc`,
+        instance_id, present, unpresent, `status`, create_time
+    </sql>
+</mapper>
