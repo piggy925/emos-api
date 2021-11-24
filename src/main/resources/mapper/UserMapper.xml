@@ -26,4 +26,12 @@
         id, username, `password`, open_id, nickname, photo, `name`, sex, tel, email, hiredate,
         `role`, root, dept_id, `status`, create_time
     </sql>
+
+    <select id="searchUserPermissions" parameterType="int" resultType="String">
+        SELECT DISTINCT p.permission_name
+        FROM tb_user u
+        JOIN tb_role r ON JSON_CONTAINS(u.role, CAST(r.id AS char))
+        JOIN tb_permission p ON JSON_CONTAINS(r.permissions, CAST(p.id AS char))
+        WHERE u.id=#{userId} AND u.status=1;
+    </select>
 </mapper>
