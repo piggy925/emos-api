@@ -44,4 +44,5 @@ gen/
 logs/
 log
 temp/
-src/main/resources/rebel.xml
+rebel.xml
+application.yml
