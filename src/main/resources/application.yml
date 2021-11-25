@@ -82,3 +82,18 @@ sa-token:
   is-share: false
   # token风格
   token-style: uuid
+
+tencent:
+  cloud:
+    appId: 腾讯云APPID
+    secretId: 腾讯云SecretId
+    secretKey: 腾讯云SecretKey
+    region: 存储桶的区域
+    bucket: 存储桶的名字
+  trtc:
+    appId: 你自己TRTC的APPID
+    secretKey: 你自己TRTC的密钥
+    expire: 86400
+wx:
+  app-id: 你自己微信小程序APPID
+  app-secret: 你自己微信小程序密钥
