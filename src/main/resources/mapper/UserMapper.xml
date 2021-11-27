@@ -34,4 +34,11 @@
         JOIN tb_permission p ON JSON_CONTAINS(r.permissions, CAST(p.id AS char))
         WHERE u.id=#{userId} AND u.status=1;
     </select>
+
+    <select id="login" resultType="java.lang.Integer" parameterType="hashmap">
+        SELECT id FROM tb_user
+        WHERE username = #{username}
+        AND password = HEX(AES_ENCRYPT(#{password}, #{username}))
+        LIMIT 1
+    </select>
 </mapper>
