@@ -39,7 +39,8 @@ public class UserController {
         if (userId != null) {
             StpUtil.login(userId);
             Set<String> permissions = userService.searchUserPermissions(userId);
-            r.put("permissions", permissions);
+            String token = StpUtil.getTokenInfo().getTokenValue();
+            r.put("permissions", permissions).put("token", token);
         }
         return r;
     }
