@@ -7,4 +7,8 @@ public interface UserMapper {
     Set<String> searchUserPermissions(int userId);
 
     Integer login(HashMap param);
+
+    HashMap searchUserSummary(int userId);
+
+    int updatePassword(HashMap param);
 }

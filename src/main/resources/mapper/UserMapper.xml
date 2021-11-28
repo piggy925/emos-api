@@ -41,4 +41,16 @@
         AND password = HEX(AES_ENCRYPT(#{password}, #{username}))
         LIMIT 1
     </select>
+
+    <select id="searchUserSummary" parameterType="int" resultType="hashmap">
+        SELECT u.name, u.photo, d.dept_name AS deptName
+        FROM tb_user u LEFT JOIN tb_dept d ON u.dept_id=d.id
+        WHERE u.id=#{userId} AND u.status=1
+    </select>
+
+    <update id="updatePassword" parameterType="hashmap">
+        UPDATE tb_user
+        SET password = HEX(AES_ENCRYPT(#{password}, username))
+        WHERE id = #{userId}
+    </update>
 </mapper>

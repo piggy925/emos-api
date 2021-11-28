@@ -22,4 +22,14 @@ public class UserServiceImpl implements UserService {
     public Set<String> searchUserPermissions(int userId) {
         return userMapper.searchUserPermissions(userId);
     }
+
+    @Override
+    public HashMap searchUserSummary(int userId) {
+        return userMapper.searchUserSummary(userId);
+    }
+
+    @Override
+    public int updatePassword(HashMap param) {
+        return userMapper.updatePassword(param);
+    }
 }

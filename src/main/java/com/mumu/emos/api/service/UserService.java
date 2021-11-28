@@ -7,4 +7,8 @@ public interface UserService {
     Integer login(HashMap param);
 
     Set<String> searchUserPermissions(int userId);
+
+    HashMap searchUserSummary(int userId);
+
+    int updatePassword(HashMap param);
 }
