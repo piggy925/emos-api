@@ -74,7 +74,7 @@ public class UserController {
     /**
      * 退出登录
      */
-    @GetMapping
+    @GetMapping("/logout")
     @Operation(summary = "退出登录")
     public R logout() {
         StpUtil.logout();
