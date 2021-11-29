@@ -1,10 +1,14 @@
 package com.mumu.emos.api.controller;
 
 import cn.dev33.satoken.annotation.SaCheckLogin;
+import cn.dev33.satoken.annotation.SaCheckPermission;
+import cn.dev33.satoken.annotation.SaMode;
 import cn.dev33.satoken.stp.StpUtil;
 import cn.hutool.json.JSONUtil;
+import com.mumu.emos.api.common.util.PageUtils;
 import com.mumu.emos.api.common.util.R;
 import com.mumu.emos.api.controller.form.LoginForm;
+import com.mumu.emos.api.controller.form.SearchUserByPageForm;
 import com.mumu.emos.api.controller.form.UpdatePasswordForm;
 import com.mumu.emos.api.exception.EmosException;
 import com.mumu.emos.api.service.UserService;
@@ -89,5 +93,21 @@ public class UserController {
     public R logout() {
         StpUtil.logout();
         return R.ok();
+    }
+
+    /**
+     * 分页查询用户
+     */
+    @PostMapping("/searchUserByPage")
+    @Operation(summary = "分页查询用户")
+    @SaCheckPermission(value = {"ROOT", "USER:SELECT"}, mode = SaMode.OR)
+    public R searchUserByPage(@Valid @RequestBody SearchUserByPageForm form) {
+        int page = form.getPage();
+        int length = form.getLength();
+        int start = (page - 1) * length;
+        HashMap param = JSONUtil.parse(form).toBean(HashMap.class);
+        param.put("start", start);
+        PageUtils pageUtils = userService.searchUserByPage(param);
+        return R.ok().put("page", pageUtils);
     }
 }

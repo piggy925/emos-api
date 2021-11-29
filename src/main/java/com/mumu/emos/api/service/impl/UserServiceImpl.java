@@ -1,11 +1,13 @@
 package com.mumu.emos.api.service.impl;
 
+import com.mumu.emos.api.common.util.PageUtils;
 import com.mumu.emos.api.db.dao.UserMapper;
 import com.mumu.emos.api.service.UserService;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Set;
 
 @Service
@@ -36,5 +38,14 @@ public class UserServiceImpl implements UserService {
     @Override
     public Integer validatePassword(HashMap param) {
         return userMapper.validatePassword(param);
+    }
+
+    @Override
+    public PageUtils searchUserByPage(HashMap param) {
+        List<HashMap> list = userMapper.searchUserByPage(param);
+        long count = userMapper.searchUserCount(param);
+        int start = (Integer) param.get("start");
+        int length = (Integer) param.get("length");
+        return new PageUtils(list, count, start, length);
     }
 }

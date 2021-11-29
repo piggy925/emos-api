@@ -1,6 +1,7 @@
 package com.mumu.emos.api.db.dao;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Set;
 
 public interface UserMapper {
@@ -13,4 +14,8 @@ public interface UserMapper {
     int updatePassword(HashMap param);
 
     Integer validatePassword(HashMap param);
+
+    List<HashMap> searchUserByPage(HashMap param);
+
+    long searchUserCount(HashMap param);
 }
