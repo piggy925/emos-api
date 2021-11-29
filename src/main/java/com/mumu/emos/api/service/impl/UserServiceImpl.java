@@ -32,4 +32,9 @@ public class UserServiceImpl implements UserService {
     public int updatePassword(HashMap param) {
         return userMapper.updatePassword(param);
     }
+
+    @Override
+    public Integer validatePassword(HashMap param) {
+        return userMapper.validatePassword(param);
+    }
 }

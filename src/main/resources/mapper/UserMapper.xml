@@ -53,4 +53,10 @@
         SET password = HEX(AES_ENCRYPT(#{password}, username))
         WHERE id = #{userId}
     </update>
+
+    <select id="validatePassword" resultType="integer" parameterType="hashmap">
+        SELECT id
+        FROM tb_user
+        WHERE id = #{userId} AND password = HEX(AES_ENCRYPT(#{oldPassword}, username))
+    </select>
 </mapper>

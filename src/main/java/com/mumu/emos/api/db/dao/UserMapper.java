@@ -11,4 +11,6 @@ public interface UserMapper {
     HashMap searchUserSummary(int userId);
 
     int updatePassword(HashMap param);
+
+    Integer validatePassword(HashMap param);
 }

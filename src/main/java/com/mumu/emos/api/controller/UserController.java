@@ -6,9 +6,11 @@ import cn.hutool.json.JSONUtil;
 import com.mumu.emos.api.common.util.R;
 import com.mumu.emos.api.controller.form.LoginForm;
 import com.mumu.emos.api.controller.form.UpdatePasswordForm;
+import com.mumu.emos.api.exception.EmosException;
 import com.mumu.emos.api.service.UserService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import org.springframework.util.ObjectUtils;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
@@ -64,9 +66,17 @@ public class UserController {
     @SaCheckLogin
     public R updatePassword(@Valid @RequestBody UpdatePasswordForm form) {
         int userId = StpUtil.getLoginIdAsInt();
-        HashMap param = new HashMap();
-        param.put("userId", userId);
-        param.put("password", form.getPassword());
+        HashMap param = new HashMap() {
+            {
+                put("userId", userId);
+                put("oldPassword", form.getOldPassword());
+                put("password", form.getPassword());
+            }
+        };
+        Integer result = userService.validatePassword(param);
+        if (ObjectUtils.isEmpty(result)) {
+            throw new EmosException("旧密码输入不正确");
+        }
         int rows = userService.updatePassword(param);
         return R.ok().put("rows", rows);
     }

@@ -11,4 +11,6 @@ public interface UserService {
     HashMap searchUserSummary(int userId);
 
     int updatePassword(HashMap param);
+
+    Integer validatePassword(HashMap param);
 }
