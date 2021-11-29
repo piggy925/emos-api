@@ -15,4 +15,11 @@
         <!--@mbg.generated-->
         id, role_name, permissions, `desc`, default_permissions, systemic
     </sql>
+
+    <select id="searchAllRole" resultType="HashMap">
+        SELECT id,
+               role_name AS roleName
+        FROM tb_role
+        ORDER BY id
+    </select>
 </mapper>

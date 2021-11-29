@@ -14,4 +14,21 @@
         <!--@mbg.generated-->
         id, dept_name, tel, email, `desc`
     </sql>
+
+    <select id="searchAllDept" resultType="HashMap">
+        SELECT id,
+               dept_name AS deptName
+        FROM tb_dept
+        ORDER BY id
+    </select>
+    
+    <select id="searchById" parameterType="int" resultType="HashMap">
+        SELECT id,
+        dept_name AS deptName,
+        tel,
+        email,
+        `desc`
+        FROM tb_dept
+        WHERE id = #{id}
+    </select>
 </mapper>
