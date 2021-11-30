@@ -1,6 +1,7 @@
 package com.mumu.emos.api.service;
 
 import com.mumu.emos.api.common.util.PageUtils;
+import com.mumu.emos.api.db.pojo.User;
 
 import java.util.HashMap;
 import java.util.Set;
@@ -17,4 +18,6 @@ public interface UserService {
     Integer validatePassword(HashMap param);
 
     PageUtils searchUserByPage(HashMap param);
+
+    int insert(User user);
 }

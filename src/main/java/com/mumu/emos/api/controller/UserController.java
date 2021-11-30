@@ -7,9 +7,11 @@ import cn.dev33.satoken.stp.StpUtil;
 import cn.hutool.json.JSONUtil;
 import com.mumu.emos.api.common.util.PageUtils;
 import com.mumu.emos.api.common.util.R;
+import com.mumu.emos.api.controller.form.InsertUserForm;
 import com.mumu.emos.api.controller.form.LoginForm;
 import com.mumu.emos.api.controller.form.SearchUserByPageForm;
 import com.mumu.emos.api.controller.form.UpdatePasswordForm;
+import com.mumu.emos.api.db.pojo.User;
 import com.mumu.emos.api.exception.EmosException;
 import com.mumu.emos.api.service.UserService;
 import io.swagger.v3.oas.annotations.Operation;
@@ -19,6 +21,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
 import javax.validation.Valid;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Set;
 
@@ -109,5 +112,17 @@ public class UserController {
         param.put("start", start);
         PageUtils pageUtils = userService.searchUserByPage(param);
         return R.ok().put("page", pageUtils);
+    }
+
+    @PostMapping("/insert")
+    @Operation(summary = "添加用户")
+    @SaCheckPermission(value = {"ROOT", "USER:INSERT"}, mode = SaMode.OR)
+    public R insert(@Valid @RequestBody InsertUserForm form) {
+        User user = JSONUtil.parse(form).toBean(User.class);
+        user.setRole(JSONUtil.parseArray(form.getRole()).toString());
+        user.setStatus((byte) 1);
+        user.setCreateTime(new Date());
+        int rows = userService.insert(user);
+        return R.ok().put("rows", rows);
     }
 }

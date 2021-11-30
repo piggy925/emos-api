@@ -2,6 +2,7 @@ package com.mumu.emos.api.service.impl;
 
 import com.mumu.emos.api.common.util.PageUtils;
 import com.mumu.emos.api.db.dao.UserMapper;
+import com.mumu.emos.api.db.pojo.User;
 import com.mumu.emos.api.service.UserService;
 import org.springframework.stereotype.Service;
 
@@ -47,5 +48,10 @@ public class UserServiceImpl implements UserService {
         int start = (Integer) param.get("start");
         int length = (Integer) param.get("length");
         return new PageUtils(list, count, start, length);
+    }
+
+    @Override
+    public int insert(User user) {
+        return userMapper.insert(user);
     }
 }

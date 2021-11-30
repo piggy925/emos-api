@@ -1,5 +1,7 @@
 package com.mumu.emos.api.db.dao;
 
+import com.mumu.emos.api.db.pojo.User;
+
 import java.util.HashMap;
 import java.util.List;
 import java.util.Set;
@@ -18,4 +20,6 @@ public interface UserMapper {
     List<HashMap> searchUserByPage(HashMap param);
 
     long searchUserCount(HashMap param);
+
+    int insert(User user);
 }
