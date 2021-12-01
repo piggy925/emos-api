@@ -206,4 +206,13 @@
         FROM tb_user
         WHERE id=#{userId}
     </select>
+
+    <delete id="deleteUserByIds">
+        DELETE FROM tb_user
+        WHERE id IN
+        <foreach collection="array" open="(" close=")" separator="," item="item">
+            #{item}
+        </foreach>
+        AND root = FALSE
+    </delete>
 </mapper>

@@ -4,6 +4,7 @@ import cn.dev33.satoken.annotation.SaCheckLogin;
 import cn.dev33.satoken.annotation.SaCheckPermission;
 import cn.dev33.satoken.annotation.SaMode;
 import cn.dev33.satoken.stp.StpUtil;
+import cn.hutool.core.util.ArrayUtil;
 import cn.hutool.json.JSONUtil;
 import com.mumu.emos.api.common.util.PageUtils;
 import com.mumu.emos.api.common.util.R;
@@ -140,6 +141,24 @@ public class UserController {
         int rows = userService.update(param);
         if (rows == 1) {
             StpUtil.logout(form.getUserId());
+        }
+        return R.ok().put("rows", rows);
+    }
+
+    @DeleteMapping("/deleteUserByIds")
+    @Operation(summary = "批量删除用户")
+    @SaCheckPermission(value = {"ROOT", "USER:DELETE"}, mode = SaMode.OR)
+    public R deleteUserByIds(@Valid @RequestBody DeleteUserByIdsForm form) {
+        Integer userId = StpUtil.getLoginIdAsInt();
+        Integer[] ids = form.getIds();
+        if (ArrayUtil.contains(ids, userId)) {
+            return R.error("您不能删除自己的账户");
+        }
+        int rows = userService.deleteUserByIds(ids);
+        if (rows > 0) {
+            for (Integer id : form.getIds()) {
+                StpUtil.logout(id);
+            }
         }
         return R.ok().put("rows", rows);
     }

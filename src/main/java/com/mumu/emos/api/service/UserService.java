@@ -24,4 +24,6 @@ public interface UserService {
     int update(HashMap param);
 
     HashMap searchById(int userId);
+
+    int deleteUserByIds(Integer[] ids);
 }

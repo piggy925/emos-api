@@ -64,4 +64,9 @@ public class UserServiceImpl implements UserService {
     public HashMap searchById(int userId) {
         return userMapper.searchById(userId);
     }
+
+    @Override
+    public int deleteUserByIds(Integer[] ids) {
+        return userMapper.deleteUserByIds(ids);
+    }
 }

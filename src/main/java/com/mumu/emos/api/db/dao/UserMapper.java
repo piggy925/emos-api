@@ -26,4 +26,6 @@ public interface UserMapper {
     int update(HashMap param);
 
     HashMap searchById(int userId);
+
+    int deleteUserByIds(Integer[] ids);
 }
