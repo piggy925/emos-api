@@ -20,4 +20,6 @@ public interface UserService {
     PageUtils searchUserByPage(HashMap param);
 
     int insert(User user);
+
+    int update(HashMap param);
 }

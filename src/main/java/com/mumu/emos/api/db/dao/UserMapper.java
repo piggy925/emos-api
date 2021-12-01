@@ -22,4 +22,6 @@ public interface UserMapper {
     long searchUserCount(HashMap param);
 
     int insert(User user);
+
+    int update(HashMap param);
 }

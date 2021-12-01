@@ -7,10 +7,7 @@ import cn.dev33.satoken.stp.StpUtil;
 import cn.hutool.json.JSONUtil;
 import com.mumu.emos.api.common.util.PageUtils;
 import com.mumu.emos.api.common.util.R;
-import com.mumu.emos.api.controller.form.InsertUserForm;
-import com.mumu.emos.api.controller.form.LoginForm;
-import com.mumu.emos.api.controller.form.SearchUserByPageForm;
-import com.mumu.emos.api.controller.form.UpdatePasswordForm;
+import com.mumu.emos.api.controller.form.*;
 import com.mumu.emos.api.db.pojo.User;
 import com.mumu.emos.api.exception.EmosException;
 import com.mumu.emos.api.service.UserService;
@@ -123,6 +120,19 @@ public class UserController {
         user.setStatus((byte) 1);
         user.setCreateTime(new Date());
         int rows = userService.insert(user);
+        return R.ok().put("rows", rows);
+    }
+
+    @PostMapping("/update")
+    @Operation(summary = "修改用户信息")
+    @SaCheckPermission(value = {"ROOT", "USER:UPDATE"}, mode = SaMode.OR)
+    public R update(@Valid @RequestBody UpdateUserForm form) {
+        HashMap param = JSONUtil.parse(form).toBean(HashMap.class);
+        param.replace("role", JSONUtil.parseArray(form.getRole()).toString());
+        int rows = userService.update(param);
+        if (rows == 1) {
+            StpUtil.logout(form.getUserId());
+        }
         return R.ok().put("rows", rows);
     }
 }

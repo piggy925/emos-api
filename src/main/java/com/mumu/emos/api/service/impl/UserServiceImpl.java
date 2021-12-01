@@ -54,4 +54,9 @@ public class UserServiceImpl implements UserService {
     public int insert(User user) {
         return userMapper.insert(user);
     }
+
+    @Override
+    public int update(HashMap param) {
+        return userMapper.update(param);
+    }
 }
