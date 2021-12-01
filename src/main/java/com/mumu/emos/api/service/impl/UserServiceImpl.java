@@ -59,4 +59,9 @@ public class UserServiceImpl implements UserService {
     public int update(HashMap param) {
         return userMapper.update(param);
     }
+
+    @Override
+    public HashMap searchById(int userId) {
+        return userMapper.searchById(userId);
+    }
 }

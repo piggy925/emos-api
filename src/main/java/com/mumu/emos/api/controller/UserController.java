@@ -62,6 +62,14 @@ public class UserController {
         return R.ok(summary);
     }
 
+    @PostMapping("/searchById")
+    @Operation(summary = "根据ID查找用户")
+    @SaCheckPermission(value = {"ROOT", "USER:SELECT"}, mode = SaMode.OR)
+    public R searchById(@Valid @RequestBody SearchUserByIdForm form) {
+        HashMap map = userService.searchById(form.getUserId());
+        return R.ok(map);
+    }
+
     /**
      * 修改密码
      */

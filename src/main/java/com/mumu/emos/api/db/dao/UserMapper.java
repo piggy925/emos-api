@@ -24,4 +24,6 @@ public interface UserMapper {
     int insert(User user);
 
     int update(HashMap param);
+
+    HashMap searchById(int userId);
 }

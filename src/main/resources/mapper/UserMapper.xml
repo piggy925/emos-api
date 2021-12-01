@@ -199,4 +199,11 @@
         id=id
         WHERE id=#{userId}
     </update>
+
+    <select id="searchById" parameterType="int" resultType="HashMap">
+        SELECT id, username, name, sex, tel, email, hiredate, role, dept_id AS deptId, status,
+        CAST(AES_DECRYPT(UNHEX(password),username) AS char) AS password
+        FROM tb_user
+        WHERE id=#{userId}
+    </select>
 </mapper>
