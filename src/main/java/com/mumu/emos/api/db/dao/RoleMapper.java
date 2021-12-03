@@ -5,4 +5,8 @@ import java.util.HashMap;
 
 public interface RoleMapper {
     ArrayList<HashMap> searchAllRole();
+
+    ArrayList<HashMap> searchRoleByPage(HashMap param);
+
+    long searchRoleCount(HashMap param);
 }

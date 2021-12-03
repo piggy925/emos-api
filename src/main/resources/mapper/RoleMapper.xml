@@ -22,4 +22,35 @@
         FROM tb_role
         ORDER BY id
     </select>
+
+    <select id="searchRoleByPage" resultType="java.util.HashMap">
+        SELECT r.id,
+        r.role_name AS roleName,
+        JSON_LENGTH(r.permissions) AS permissions,
+        COUNT(u.id) AS users,
+        r.`desc`,
+        r.systemic
+        FROM tb_role r
+        LEFT JOIN tb_user u
+        ON JSON_CONTAINS(u.role, CONVERT(r.id, char))
+        WHERE 1 = 1
+        <if test="roleName != null">
+            AND role_name LIKE '%${roleName}%'
+        </if>
+        GROUP BY r.id
+        LIMIT #{start}, #{length}
+    </select>
+
+    <select id="searchRoleCount" parameterType="HashMap" resultType="long">
+        SELECT COUNT(*) FROM (
+        SELECT r.id
+        FROM tb_role r
+        LEFT JOIN tb_user u ON JSON_CONTAINS ( u.role, CONVERT ( r.id, char ) )
+        WHERE 1=1
+        <if test="roleName != null">
+            AND r.role_name LIKE '%${roleName}%'
+        </if>
+        GROUP BY r.id
+        ) AS temp
+    </select>
 </mapper>
