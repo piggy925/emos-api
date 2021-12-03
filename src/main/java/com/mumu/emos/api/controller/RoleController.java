@@ -5,7 +5,9 @@ import cn.dev33.satoken.annotation.SaMode;
 import cn.hutool.json.JSONUtil;
 import com.mumu.emos.api.common.util.PageUtils;
 import com.mumu.emos.api.common.util.R;
+import com.mumu.emos.api.controller.form.InsertRoleForm;
 import com.mumu.emos.api.controller.form.SearchRoleByPageForm;
+import com.mumu.emos.api.db.pojo.Role;
 import com.mumu.emos.api.service.RoleService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -41,5 +43,17 @@ public class RoleController {
         param.put("start", start);
         PageUtils pageUtils = roleService.searchRoleByPage(param);
         return R.ok().put("page", pageUtils);
+    }
+
+    @PostMapping("/insert")
+    @Operation(summary = "添加角色")
+    @SaCheckPermission(value = {"ROOT", "ROLE:INSERT"}, mode = SaMode.OR)
+    public R insert(@Valid @RequestBody InsertRoleForm form) {
+        Role role = new Role();
+        role.setRoleName(form.getRoleName());
+        role.setPermissions(JSONUtil.parseArray(form.getPermissions()).toString());
+        role.setDesc(form.getDesc());
+        int rows = roleService.insert(role);
+        return R.ok().put("rows", rows);
     }
 }
