@@ -59,7 +59,33 @@
         SET role_name = #{roleName},
         permissions = #{permissions}
         <if test="desc != null">
-            , `desc` = #{desc}
+            ,
+            `desc` = #{desc}
         </if>
     </insert>
+
+    <select id="searchUserIdByRoleId" parameterType="int" resultType="int">
+        SELECT u.id
+        FROM tb_role r
+        JOIN tb_user u ON JSON_CONTAINS(u.role, CONVERT(r.id, char))
+        WHERE r.id = #{id}
+    </select>
+    <update id="update" parameterType="com.mumu.emos.api.db.pojo.Role">
+        UPDATE tb_role
+        SET role_name=#{roleName},
+        `desc`=#{desc},
+        permissions=#{permissions}
+        WHERE id = #{id}
+        AND id != 0
+    </update>
+
+    <select id="searchById" parameterType="int" resultType="HashMap">
+        SELECT id,
+        role_name AS roleName,
+        permissions,
+        `desc`,
+        default_permissions AS defaultPermissions
+        FROM tb_role
+        WHERE id = #{id}
+    </select>
 </mapper>

@@ -34,4 +34,19 @@ public class RoleServiceImpl implements RoleService {
     public int insert(Role role) {
         return roleMapper.insert(role);
     }
+
+    @Override
+    public ArrayList<Integer> searchUserIdByRoleId(Integer id) {
+        return roleMapper.searchUserIdByRoleId(id);
+    }
+
+    @Override
+    public int update(Role role) {
+        return roleMapper.update(role);
+    }
+
+    @Override
+    public HashMap searchById(int id) {
+        return roleMapper.searchById(id);
+    }
 }

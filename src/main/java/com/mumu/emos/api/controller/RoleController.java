@@ -2,11 +2,14 @@ package com.mumu.emos.api.controller;
 
 import cn.dev33.satoken.annotation.SaCheckPermission;
 import cn.dev33.satoken.annotation.SaMode;
+import cn.dev33.satoken.stp.StpUtil;
 import cn.hutool.json.JSONUtil;
 import com.mumu.emos.api.common.util.PageUtils;
 import com.mumu.emos.api.common.util.R;
 import com.mumu.emos.api.controller.form.InsertRoleForm;
+import com.mumu.emos.api.controller.form.SearchRoleByIdForm;
 import com.mumu.emos.api.controller.form.SearchRoleByPageForm;
+import com.mumu.emos.api.controller.form.UpdateRoleForm;
 import com.mumu.emos.api.db.pojo.Role;
 import com.mumu.emos.api.service.RoleService;
 import io.swagger.v3.oas.annotations.Operation;
@@ -54,6 +57,31 @@ public class RoleController {
         role.setPermissions(JSONUtil.parseArray(form.getPermissions()).toString());
         role.setDesc(form.getDesc());
         int rows = roleService.insert(role);
+        return R.ok().put("rows", rows);
+    }
+
+    @PostMapping("/searchById")
+    @Operation(summary = "根据ID查询角色")
+    @SaCheckPermission(value = {"ROOT", "ROLE:SELECT"}, mode = SaMode.OR)
+    public R searchById(@Valid @RequestBody SearchRoleByIdForm form) {
+        HashMap map = roleService.searchById(form.getId());
+        return R.ok(map);
+    }
+
+    @PostMapping("/update")
+    @Operation(summary = "更新角色信息")
+    @SaCheckPermission(value = {"ROOT", "ROLE:UPDATE"}, mode = SaMode.OR)
+    public R update(@Valid @RequestBody UpdateRoleForm form) {
+        Role role = new Role();
+        role.setId(form.getId());
+        role.setRoleName(form.getRoleName());
+        role.setPermissions(JSONUtil.parseArray(form.getPermissions()).toString());
+        role.setDesc(form.getDesc());
+        int rows = roleService.update(role);
+        if (rows == 0 && form.getChanged()) {
+            ArrayList<Integer> ids = roleService.searchUserIdByRoleId(form.getId());
+            ids.forEach(StpUtil::login);
+        }
         return R.ok().put("rows", rows);
     }
 }

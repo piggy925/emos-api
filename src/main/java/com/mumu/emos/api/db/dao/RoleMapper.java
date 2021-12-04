@@ -13,4 +13,10 @@ public interface RoleMapper {
     long searchRoleCount(HashMap param);
 
     int insert(Role role);
+
+    ArrayList<Integer> searchUserIdByRoleId(Integer id);
+
+    int update(Role role);
+
+    HashMap searchById(int id);
 }

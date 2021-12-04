@@ -12,4 +12,10 @@ public interface RoleService {
     PageUtils searchRoleByPage(HashMap param);
 
     int insert(Role role);
+
+    ArrayList<Integer> searchUserIdByRoleId(Integer id);
+
+    int update(Role role);
+
+    HashMap searchById(int id);
 }
