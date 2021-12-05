@@ -2,6 +2,7 @@ package com.mumu.emos.api.service.impl;
 
 import com.mumu.emos.api.common.util.PageUtils;
 import com.mumu.emos.api.db.dao.DeptMapper;
+import com.mumu.emos.api.db.pojo.Dept;
 import com.mumu.emos.api.service.DeptService;
 import org.springframework.stereotype.Service;
 
@@ -33,5 +34,10 @@ public class DeptServiceImpl implements DeptService {
         int start = (int) param.get("start");
         int length = (int) param.get("length");
         return new PageUtils(list, count, start, length);
+    }
+
+    @Override
+    public int insert(Dept dept) {
+        return deptMapper.insert(dept);
     }
 }

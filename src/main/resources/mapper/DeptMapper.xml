@@ -60,4 +60,18 @@
         </if>
         GROUP BY d.id) AS temp
     </select>
+
+    <insert id="insert" parameterType="com.mumu.emos.api.db.pojo.Dept">
+        INSERT INTO tb_dept
+        SET dept_name=#{deptName}
+        <if test="tel != null">
+            ,tel=#{tel}
+        </if>
+        <if test="email != null">
+            ,email=#{email}
+        </if>
+        <if test="desc != null">
+            ,`desc`=#{desc}
+        </if>
+    </insert>
 </mapper>

@@ -5,8 +5,10 @@ import cn.dev33.satoken.annotation.SaMode;
 import cn.hutool.json.JSONUtil;
 import com.mumu.emos.api.common.util.PageUtils;
 import com.mumu.emos.api.common.util.R;
+import com.mumu.emos.api.controller.form.InsertDeptForm;
 import com.mumu.emos.api.controller.form.SearchDeptByIdForm;
 import com.mumu.emos.api.controller.form.SearchDeptByPageForm;
+import com.mumu.emos.api.db.pojo.Dept;
 import com.mumu.emos.api.service.DeptService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -50,5 +52,14 @@ public class DeptController {
         param.put("start", start);
         PageUtils pageUtils = deptService.searchDeptByPage(param);
         return R.ok().put("page", pageUtils);
+    }
+
+    @PostMapping("/insert")
+    @Operation(summary = "添加部门")
+    @SaCheckPermission(value = {"ROOT", "DEPT:INSERT"}, mode = SaMode.OR)
+    public R insert(@Valid @RequestBody InsertDeptForm form) {
+        Dept dept = JSONUtil.parse(form).toBean(Dept.class);
+        int rows = deptService.insert(dept);
+        return R.ok().put("rows", rows);
     }
 }
