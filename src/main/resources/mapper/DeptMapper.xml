@@ -21,7 +21,7 @@
         FROM tb_dept
         ORDER BY id
     </select>
-    
+
     <select id="searchById" parameterType="int" resultType="HashMap">
         SELECT id,
         dept_name AS deptName,
@@ -30,5 +30,34 @@
         `desc`
         FROM tb_dept
         WHERE id = #{id}
+    </select>
+
+    <select id="searchDeptByPage" resultType="java.util.HashMap" parameterType="hashmap">
+        SELECT d.id,
+        d.dept_name AS deptName,
+        d.tel,
+        d.email,
+        d.desc,
+        COUNT(u.id) AS emps
+        FROM tb_dept d
+        LEFT JOIN tb_user u ON d.id = u.dept_id AND u.status = 1
+        WHERE 1 = 1
+        <if test="deptName != null">
+            AND d.dept_name LIKE '%${deptName}%'
+        </if>
+        GROUP BY d.id
+        LIMIT #{start}, #{length};
+    </select>
+
+    <select id="searchDeptCount" resultType="long" parameterType="hashmap">
+        SELECT COUNT(temp.id)
+        FROM (SELECT d.id
+        FROM tb_dept d
+        LEFT JOIN tb_user u ON d.id = u.id
+        WHERE 1 = 1
+        <if test="deptName != null">
+            AND d.dept_name LIKE '%${deptName}%'
+        </if>
+        GROUP BY d.id) AS temp
     </select>
 </mapper>

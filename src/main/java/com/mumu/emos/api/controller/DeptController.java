@@ -2,8 +2,11 @@ package com.mumu.emos.api.controller;
 
 import cn.dev33.satoken.annotation.SaCheckPermission;
 import cn.dev33.satoken.annotation.SaMode;
+import cn.hutool.json.JSONUtil;
+import com.mumu.emos.api.common.util.PageUtils;
 import com.mumu.emos.api.common.util.R;
 import com.mumu.emos.api.controller.form.SearchDeptByIdForm;
+import com.mumu.emos.api.controller.form.SearchDeptByPageForm;
 import com.mumu.emos.api.service.DeptService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -34,5 +37,18 @@ public class DeptController {
     public R searchById(@Valid @RequestBody SearchDeptByIdForm form) {
         HashMap map = deptService.searchById(form.getId());
         return R.ok(map);
+    }
+
+    @PostMapping("/searchDeptByPage")
+    @Operation(summary = "分页查询部门")
+    @SaCheckPermission(value = {"ROOT", "DEPT:SELECT"}, mode = SaMode.OR)
+    public R searchDeptByPage(@Valid @RequestBody SearchDeptByPageForm form) {
+        Integer page = form.getPage();
+        Integer length = form.getLength();
+        Integer start = (page - 1) * length;
+        HashMap param = JSONUtil.parse(form).toBean(HashMap.class);
+        param.put("start", start);
+        PageUtils pageUtils = deptService.searchDeptByPage(param);
+        return R.ok().put("page", pageUtils);
     }
 }

@@ -1,5 +1,6 @@
 package com.mumu.emos.api.service.impl;
 
+import com.mumu.emos.api.common.util.PageUtils;
 import com.mumu.emos.api.db.dao.DeptMapper;
 import com.mumu.emos.api.service.DeptService;
 import org.springframework.stereotype.Service;
@@ -23,5 +24,14 @@ public class DeptServiceImpl implements DeptService {
     public HashMap searchById(int id) {
         HashMap map = deptMapper.searchById(id);
         return map;
+    }
+
+    @Override
+    public PageUtils searchDeptByPage(HashMap param) {
+        ArrayList<HashMap> list = deptMapper.searchDeptByPage(param);
+        long count = deptMapper.searchDeptCount(param);
+        int start = (int) param.get("start");
+        int length = (int) param.get("length");
+        return new PageUtils(list, count, start, length);
     }
 }
