@@ -2,7 +2,7 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.mumu.emos.api.db.dao.RoleMapper">
     <resultMap id="BaseResultMap" type="com.mumu.emos.api.db.pojo.Role">
-        <!--@mbg.generated-->
+    <!--@mbg.generated-->
         <!--@Table tb_role-->
         <id column="id" jdbcType="INTEGER" property="id"/>
         <result column="role_name" jdbcType="VARCHAR" property="roleName"/>
@@ -88,4 +88,26 @@
         FROM tb_role
         WHERE id = #{id}
     </select>
+
+    <select id="searchCanDelete" resultType="boolean">
+        SELECT IF(SUM(temp.users) > 0, FALSE, TRUE)
+        FROM (SELECT COUNT(u.id) AS users
+        FROM tb_role r
+        LEFT JOIN tb_user u ON JSON_CONTAINS(u.role, CONVERT(r.id, char))
+        WHERE r.id IN
+        <foreach collection="array" open="(" close=")" separator="," item="one">
+            #{one}
+        </foreach>
+        GROUP BY r.id)
+        AS temp
+    </select>
+
+    <delete id="deleteRoleByIds">
+        DELETE
+        FROM tb_role
+        WHERE id IN
+        <foreach collection="array" open="(" close=")" separator="," item="one">
+            #{one}
+        </foreach>
+    </delete>
 </mapper>

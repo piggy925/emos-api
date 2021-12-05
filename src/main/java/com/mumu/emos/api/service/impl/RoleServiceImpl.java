@@ -3,6 +3,7 @@ package com.mumu.emos.api.service.impl;
 import com.mumu.emos.api.common.util.PageUtils;
 import com.mumu.emos.api.db.dao.RoleMapper;
 import com.mumu.emos.api.db.pojo.Role;
+import com.mumu.emos.api.exception.EmosException;
 import com.mumu.emos.api.service.RoleService;
 import org.springframework.stereotype.Service;
 
@@ -48,5 +49,13 @@ public class RoleServiceImpl implements RoleService {
     @Override
     public HashMap searchById(int id) {
         return roleMapper.searchById(id);
+    }
+
+    @Override
+    public int deleteRoleByIds(Integer[] ids) {
+        if (!roleMapper.searchCanDelete(ids)) {
+            throw new EmosException("该角色下存在已关联用户，无法删除");
+        }
+        return roleMapper.deleteRoleByIds(ids);
     }
 }

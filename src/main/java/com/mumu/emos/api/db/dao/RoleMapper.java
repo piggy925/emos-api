@@ -19,4 +19,8 @@ public interface RoleMapper {
     int update(Role role);
 
     HashMap searchById(int id);
+
+    boolean searchCanDelete(Integer[] ids);
+
+    int deleteRoleByIds(Integer[] ids);
 }

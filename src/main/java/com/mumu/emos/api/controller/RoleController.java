@@ -6,10 +6,7 @@ import cn.dev33.satoken.stp.StpUtil;
 import cn.hutool.json.JSONUtil;
 import com.mumu.emos.api.common.util.PageUtils;
 import com.mumu.emos.api.common.util.R;
-import com.mumu.emos.api.controller.form.InsertRoleForm;
-import com.mumu.emos.api.controller.form.SearchRoleByIdForm;
-import com.mumu.emos.api.controller.form.SearchRoleByPageForm;
-import com.mumu.emos.api.controller.form.UpdateRoleForm;
+import com.mumu.emos.api.controller.form.*;
 import com.mumu.emos.api.db.pojo.Role;
 import com.mumu.emos.api.service.RoleService;
 import io.swagger.v3.oas.annotations.Operation;
@@ -82,6 +79,14 @@ public class RoleController {
             ArrayList<Integer> ids = roleService.searchUserIdByRoleId(form.getId());
             ids.forEach(StpUtil::login);
         }
+        return R.ok().put("rows", rows);
+    }
+
+    @PostMapping("/deleteRoleByIds")
+    @Operation(summary = "删除角色信息")
+    @SaCheckPermission(value = {"ROOT", "ROLE:DELETE"}, mode = SaMode.OR)
+    public R deleteRoleByIds(@Valid @RequestBody DeleteRoleByIdsForm form) {
+        int rows = roleService.deleteRoleByIds(form.getIds());
         return R.ok().put("rows", rows);
     }
 }

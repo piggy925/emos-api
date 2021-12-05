@@ -18,4 +18,6 @@ public interface RoleService {
     int update(Role role);
 
     HashMap searchById(int id);
+
+    int deleteRoleByIds(Integer[] ids);
 }
