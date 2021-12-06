@@ -3,6 +3,7 @@ package com.mumu.emos.api.service.impl;
 import com.mumu.emos.api.common.util.PageUtils;
 import com.mumu.emos.api.db.dao.DeptMapper;
 import com.mumu.emos.api.db.pojo.Dept;
+import com.mumu.emos.api.exception.EmosException;
 import com.mumu.emos.api.service.DeptService;
 import org.springframework.stereotype.Service;
 
@@ -44,5 +45,14 @@ public class DeptServiceImpl implements DeptService {
     @Override
     public int update(Dept dept) {
         return deptMapper.update(dept);
+    }
+
+    @Override
+    public int deleteDeptByIds(Integer[] ids) {
+        boolean canDelete = deptMapper.searchCanDelete(ids);
+        if (!canDelete) {
+            throw new EmosException("该部门下存在用户，无法删除");
+        }
+        return deptMapper.deleteDeptByIds(ids);
     }
 }

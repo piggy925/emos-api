@@ -83,4 +83,23 @@
             `desc`    = #{desc}
         WHERE id = #{id}
     </update>
+
+    <delete id="deleteDeptByIds">
+        DELETE FROM tb_dept WHERE id IN
+        <foreach collection="array" open="(" close=")" separator="," item="one">
+            #{one}
+        </foreach>
+    </delete>
+
+    <select id="searchCanDelete" resultType="boolean">
+        SELECT IF(SUM(temp.users) > 0, FALSE, TRUE)
+        FROM (SELECT COUNT(u.id) AS users
+        FROM tb_dept d
+        LEFT JOIN tb_user u ON d.id = u.dept_id
+        WHERE d.id IN
+        <foreach collection="array" open="(" close=")" separator="," item="one">
+            #{one}
+        </foreach>
+        GROUP BY d.id) AS temp
+    </select>
 </mapper>

@@ -17,4 +17,8 @@ public interface DeptMapper {
     int insert(Dept dept);
 
     int update(Dept dept);
+
+    boolean searchCanDelete(Integer[] ids);
+
+    int deleteDeptByIds(Integer[] ids);
 }
