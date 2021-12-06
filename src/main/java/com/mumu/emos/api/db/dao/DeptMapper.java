@@ -15,4 +15,6 @@ public interface DeptMapper {
     long searchDeptCount(HashMap param);
 
     int insert(Dept dept);
+
+    int update(Dept dept);
 }

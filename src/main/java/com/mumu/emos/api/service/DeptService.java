@@ -14,4 +14,6 @@ public interface DeptService {
     PageUtils searchDeptByPage(HashMap param);
 
     int insert(Dept dept);
+
+    int update(Dept dept);
 }

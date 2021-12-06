@@ -40,4 +40,9 @@ public class DeptServiceImpl implements DeptService {
     public int insert(Dept dept) {
         return deptMapper.insert(dept);
     }
+
+    @Override
+    public int update(Dept dept) {
+        return deptMapper.update(dept);
+    }
 }

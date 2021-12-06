@@ -65,13 +65,22 @@
         INSERT INTO tb_dept
         SET dept_name=#{deptName}
         <if test="tel != null">
-            ,tel=#{tel}
+            , tel=#{tel}
         </if>
         <if test="email != null">
-            ,email=#{email}
+            , email=#{email}
         </if>
         <if test="desc != null">
-            ,`desc`=#{desc}
+            , `desc`=#{desc}
         </if>
     </insert>
+
+    <update id="update" parameterType="com.mumu.emos.api.db.pojo.Dept">
+        UPDATE tb_dept
+        SET dept_name = #{deptName},
+            tel       = #{tel},
+            email     = #{email},
+            `desc`    = #{desc}
+        WHERE id = #{id}
+    </update>
 </mapper>

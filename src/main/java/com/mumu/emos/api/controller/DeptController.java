@@ -8,6 +8,7 @@ import com.mumu.emos.api.common.util.R;
 import com.mumu.emos.api.controller.form.InsertDeptForm;
 import com.mumu.emos.api.controller.form.SearchDeptByIdForm;
 import com.mumu.emos.api.controller.form.SearchDeptByPageForm;
+import com.mumu.emos.api.controller.form.UpdateDeptForm;
 import com.mumu.emos.api.db.pojo.Dept;
 import com.mumu.emos.api.service.DeptService;
 import io.swagger.v3.oas.annotations.Operation;
@@ -60,6 +61,15 @@ public class DeptController {
     public R insert(@Valid @RequestBody InsertDeptForm form) {
         Dept dept = JSONUtil.parse(form).toBean(Dept.class);
         int rows = deptService.insert(dept);
+        return R.ok().put("rows", rows);
+    }
+
+    @PostMapping("/update")
+    @Operation(summary = "更新部门")
+    @SaCheckPermission(value = {"ROOT", "DEPT:INSERT"}, mode = SaMode.OR)
+    public R update(@Valid @RequestBody UpdateDeptForm form) {
+        Dept dept = JSONUtil.parse(form).toBean(Dept.class);
+        int rows = deptService.update(dept);
         return R.ok().put("rows", rows);
     }
 }
