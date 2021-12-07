@@ -1,10 +1,14 @@
 package com.mumu.emos.api.controller;
 
 import cn.dev33.satoken.annotation.SaCheckLogin;
+import cn.dev33.satoken.annotation.SaCheckPermission;
+import cn.dev33.satoken.annotation.SaMode;
 import cn.hutool.json.JSONUtil;
 import com.mumu.emos.api.common.util.PageUtils;
 import com.mumu.emos.api.common.util.R;
+import com.mumu.emos.api.controller.form.InsertMeetingRoomForm;
 import com.mumu.emos.api.controller.form.SearchMeetingRoomByPageForm;
+import com.mumu.emos.api.db.pojo.MeetingRoom;
 import com.mumu.emos.api.service.MeetingRoomService;
 import io.swagger.v3.oas.annotations.Operation;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -33,5 +37,14 @@ public class MeetingRoomController {
         param.put("start", start);
         PageUtils pageUtils = meetingRoomService.searchMeetingRoomByPage(param);
         return R.ok().put("page", pageUtils);
+    }
+
+    @PostMapping("/insert")
+    @Operation(summary = "添加会议室")
+    @SaCheckPermission(value = {"ROOT", "MEETING_ROOM:INSERT"}, mode = SaMode.OR)
+    public R insert(@Valid @RequestBody InsertMeetingRoomForm form) {
+        MeetingRoom meetingRoom = JSONUtil.parse(form).toBean(MeetingRoom.class);
+        int rows = meetingRoomService.insert(meetingRoom);
+        return R.ok().put("rows", rows);
     }
 }

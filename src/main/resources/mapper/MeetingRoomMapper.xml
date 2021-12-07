@@ -53,4 +53,16 @@
         </if>
         ) AS temp
     </select>
+
+    <insert id="insert" parameterType="com.mumu.emos.api.db.pojo.MeetingRoom">
+        INSERT INTO tb_meeting_room
+        SET name=#{name},
+        max=#{max}
+        <if test="desc!=null">
+            ,`desc`=#{desc}
+        </if>
+        <if test="status!=null">
+            ,status=#{status}
+        </if>
+    </insert>
 </mapper>

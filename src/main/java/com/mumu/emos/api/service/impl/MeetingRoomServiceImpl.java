@@ -2,6 +2,7 @@ package com.mumu.emos.api.service.impl;
 
 import com.mumu.emos.api.common.util.PageUtils;
 import com.mumu.emos.api.db.dao.MeetingRoomMapper;
+import com.mumu.emos.api.db.pojo.MeetingRoom;
 import com.mumu.emos.api.service.MeetingRoomService;
 import org.springframework.stereotype.Service;
 
@@ -22,5 +23,10 @@ public class MeetingRoomServiceImpl implements MeetingRoomService {
         int length = (Integer) param.get("length");
         PageUtils pageUtils = new PageUtils(list, count, start, length);
         return pageUtils;
+    }
+
+    @Override
+    public int insert(MeetingRoom meetingRoom) {
+        return meetingRoomMapper.insert(meetingRoom);
     }
 }
