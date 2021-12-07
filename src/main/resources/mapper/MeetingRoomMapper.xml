@@ -65,4 +65,23 @@
             ,status=#{status}
         </if>
     </insert>
+
+    <select id="searchById" parameterType="int" resultType="HashMap">
+        SELECT id,
+               name,
+               max,
+               `desc`,
+               status
+        FROM tb_meeting_room
+        WHERE id = #{id}
+    </select>
+
+    <update id="update" parameterType="com.mumu.emos.api.db.pojo.MeetingRoom">
+        UPDATE tb_meeting_room
+        SET name=#{name},
+            max=#{max},
+            `desc`=#{desc},
+            status=#{status}
+        WHERE id = #{id}
+    </update>
 </mapper>

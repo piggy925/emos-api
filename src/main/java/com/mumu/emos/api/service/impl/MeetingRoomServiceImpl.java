@@ -29,4 +29,14 @@ public class MeetingRoomServiceImpl implements MeetingRoomService {
     public int insert(MeetingRoom meetingRoom) {
         return meetingRoomMapper.insert(meetingRoom);
     }
+
+    @Override
+    public int update(MeetingRoom meetingRoom) {
+        return meetingRoomMapper.update(meetingRoom);
+    }
+
+    @Override
+    public HashMap searchById(int id) {
+        return meetingRoomMapper.searchById(id);
+    }
 }

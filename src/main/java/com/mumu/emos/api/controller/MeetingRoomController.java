@@ -7,7 +7,9 @@ import cn.hutool.json.JSONUtil;
 import com.mumu.emos.api.common.util.PageUtils;
 import com.mumu.emos.api.common.util.R;
 import com.mumu.emos.api.controller.form.InsertMeetingRoomForm;
+import com.mumu.emos.api.controller.form.SearchMeetingRoomByIdForm;
 import com.mumu.emos.api.controller.form.SearchMeetingRoomByPageForm;
+import com.mumu.emos.api.controller.form.UpdateMeetingRoomForm;
 import com.mumu.emos.api.db.pojo.MeetingRoom;
 import com.mumu.emos.api.service.MeetingRoomService;
 import io.swagger.v3.oas.annotations.Operation;
@@ -46,5 +48,22 @@ public class MeetingRoomController {
         MeetingRoom meetingRoom = JSONUtil.parse(form).toBean(MeetingRoom.class);
         int rows = meetingRoomService.insert(meetingRoom);
         return R.ok().put("rows", rows);
+    }
+
+    @PostMapping("/update")
+    @Operation(summary = "修改会议室")
+    @SaCheckPermission(value = {"ROOT", "MEETING_ROOM:UPDATE"}, mode = SaMode.OR)
+    public R update(@Valid @RequestBody UpdateMeetingRoomForm form) {
+        MeetingRoom meetingRoom = JSONUtil.parse(form).toBean(MeetingRoom.class);
+        int rows = meetingRoomService.update(meetingRoom);
+        return R.ok().put("rows", rows);
+    }
+
+    @PostMapping("/searchById")
+    @Operation(summary = "根据ID查找会议室")
+    @SaCheckPermission(value = {"ROOT", "MEETING_ROOM:SELECT"}, mode = SaMode.OR)
+    public R searchById(@Valid @RequestBody SearchMeetingRoomByIdForm form) {
+        HashMap map = meetingRoomService.searchById(form.getId());
+        return R.ok(map);
     }
 }

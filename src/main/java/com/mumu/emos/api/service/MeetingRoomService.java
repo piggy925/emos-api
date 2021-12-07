@@ -9,4 +9,8 @@ public interface MeetingRoomService {
     PageUtils searchMeetingRoomByPage(HashMap param);
 
     int insert(MeetingRoom meetingRoom);
+
+    int update(MeetingRoom meetingRoom);
+
+    HashMap searchById(int id);
 }
