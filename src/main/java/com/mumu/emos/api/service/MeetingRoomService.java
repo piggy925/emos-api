@@ -13,4 +13,6 @@ public interface MeetingRoomService {
     int update(MeetingRoom meetingRoom);
 
     HashMap searchById(int id);
+
+    int deleteMeetingRoomByIds(Integer[] ids);
 }

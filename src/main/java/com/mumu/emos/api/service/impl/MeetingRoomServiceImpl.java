@@ -3,6 +3,7 @@ package com.mumu.emos.api.service.impl;
 import com.mumu.emos.api.common.util.PageUtils;
 import com.mumu.emos.api.db.dao.MeetingRoomMapper;
 import com.mumu.emos.api.db.pojo.MeetingRoom;
+import com.mumu.emos.api.exception.EmosException;
 import com.mumu.emos.api.service.MeetingRoomService;
 import org.springframework.stereotype.Service;
 
@@ -38,5 +39,13 @@ public class MeetingRoomServiceImpl implements MeetingRoomService {
     @Override
     public HashMap searchById(int id) {
         return meetingRoomMapper.searchById(id);
+    }
+
+    @Override
+    public int deleteMeetingRoomByIds(Integer[] ids) {
+        if (!meetingRoomMapper.searchCanDelete(ids)) {
+            throw new EmosException("无法删除关联会议的会议室");
+        }
+        return meetingRoomMapper.deleteMeetingRoomByIds(ids);
     }
 }

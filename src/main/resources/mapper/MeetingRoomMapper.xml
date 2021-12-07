@@ -84,4 +84,25 @@
             status=#{status}
         WHERE id = #{id}
     </update>
+
+    <select id="searchCanDelete" resultType="boolean">
+        SELECT IF( SUM( temp.meetings ) > 0, FALSE, TRUE ) AS result FROM (
+        SELECT COUNT( m.id ) AS meetings
+        FROM tb_meeting_room mr
+        JOIN tb_meeting m ON m.type=2 AND mr.`name`=m.place
+        WHERE mr.id IN
+        <foreach collection="array" open="(" separator="," close=")" item="one">
+            #{one}
+        </foreach>
+        GROUP BY mr.id
+        ) temp
+    </select>
+
+    <delete id="deleteMeetingRoomByIds">
+        DELETE FROM tb_meeting_room
+        WHERE id IN
+        <foreach collection="array" open="(" separator="," close=")" item="one">
+            #{one}
+        </foreach>
+    </delete>
 </mapper>

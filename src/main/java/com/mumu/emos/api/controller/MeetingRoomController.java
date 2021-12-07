@@ -6,10 +6,7 @@ import cn.dev33.satoken.annotation.SaMode;
 import cn.hutool.json.JSONUtil;
 import com.mumu.emos.api.common.util.PageUtils;
 import com.mumu.emos.api.common.util.R;
-import com.mumu.emos.api.controller.form.InsertMeetingRoomForm;
-import com.mumu.emos.api.controller.form.SearchMeetingRoomByIdForm;
-import com.mumu.emos.api.controller.form.SearchMeetingRoomByPageForm;
-import com.mumu.emos.api.controller.form.UpdateMeetingRoomForm;
+import com.mumu.emos.api.controller.form.*;
 import com.mumu.emos.api.db.pojo.MeetingRoom;
 import com.mumu.emos.api.service.MeetingRoomService;
 import io.swagger.v3.oas.annotations.Operation;
@@ -65,5 +62,13 @@ public class MeetingRoomController {
     public R searchById(@Valid @RequestBody SearchMeetingRoomByIdForm form) {
         HashMap map = meetingRoomService.searchById(form.getId());
         return R.ok(map);
+    }
+
+    @PostMapping("/deleteMeetingRoomByIds")
+    @Operation(summary = "删除会议室记录")
+    @SaCheckPermission(value = {"ROOT", "MEETING_ROOM:DELETE"}, mode = SaMode.OR)
+    public R deleteMeetingRoomByIds(@Valid @RequestBody DeleteMeetingRoomByIdsForm form) {
+        int rows = meetingRoomService.deleteMeetingRoomByIds(form.getIds());
+        return R.ok().put("rows", rows);
     }
 }
