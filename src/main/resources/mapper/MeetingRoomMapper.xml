@@ -14,4 +14,43 @@
         <!--@mbg.generated-->
         id, `name`, `max`, `desc`, `status`
     </sql>
+
+    <select id="searchMeetingRoomByPage" parameterType="HashMap" resultType="HashMap">
+        SELECT mr.id,
+        mr.`name`,
+        mr.max,
+        mr.`desc`,
+        mr.`status`
+        FROM tb_meeting_room mr
+        LEFT JOIN tb_meeting m ON m.type=2 AND mr.`name`=m.place
+        <if test="name!=null">
+            WHERE mr.name LIKE '%${name}%'
+        </if>
+        GROUP BY mr.id
+        <if test="canDelete==false">
+            HAVING COUNT(m.id) > 0
+        </if>
+        <if test="canDelete==true">
+            HAVING COUNT(m.id) = 0
+        </if>
+        LIMIT #{start}, #{length}
+    </select>
+
+    <select id="searchMeetingRoomCount" parameterType="HashMap" resultType="long">
+        SELECT COUNT(*) FROM (
+        SELECT mr.id
+        FROM tb_meeting_room mr
+        LEFT JOIN tb_meeting m ON m.type=2 AND mr.`name`=m.place
+        <if test="name!=null">
+            WHERE mr.name LIKE '%${name}%'
+        </if>
+        GROUP BY mr.id
+        <if test="canDelete==false">
+            HAVING COUNT(m.id) > 0
+        </if>
+        <if test="canDelete==true">
+            HAVING COUNT(m.id) = 0
+        </if>
+        ) AS temp
+    </select>
 </mapper>
