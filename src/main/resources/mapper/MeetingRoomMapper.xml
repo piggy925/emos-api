@@ -105,4 +105,11 @@
             #{one}
         </foreach>
     </delete>
+
+    <select id="searchAllMeetingRoom" resultType="HashMap">
+        SELECT id,
+               `name`
+        FROM tb_meeting_room
+        WHERE status = 1
+    </select>
 </mapper>

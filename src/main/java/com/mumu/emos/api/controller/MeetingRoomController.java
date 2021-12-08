@@ -10,13 +10,11 @@ import com.mumu.emos.api.controller.form.*;
 import com.mumu.emos.api.db.pojo.MeetingRoom;
 import com.mumu.emos.api.service.MeetingRoomService;
 import io.swagger.v3.oas.annotations.Operation;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
 import javax.validation.Valid;
+import java.util.ArrayList;
 import java.util.HashMap;
 
 @RestController
@@ -36,6 +34,14 @@ public class MeetingRoomController {
         param.put("start", start);
         PageUtils pageUtils = meetingRoomService.searchMeetingRoomByPage(param);
         return R.ok().put("page", pageUtils);
+    }
+
+    @GetMapping("/searchAllMeetingRoom")
+    @Operation(summary = "查询所有会议室")
+    @SaCheckLogin
+    public R searchAllMeetingRoom() {
+        ArrayList<HashMap> list = meetingRoomService.searchAllMeetingRoom();
+        return R.ok().put("list", list);
     }
 
     @PostMapping("/insert")

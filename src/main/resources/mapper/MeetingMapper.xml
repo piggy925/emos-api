@@ -26,4 +26,34 @@
         id, uuid, title, creator_id, `date`, place, `start`, `end`, `type`, members, `desc`,
         instance_id, present, unpresent, `status`, create_time
     </sql>
+
+    <select id="searchOfflineMeetingByPage" parameterType="hashmap" resultType="hashmap">
+        SELECT mr.name, temp.meeting
+        FROM tb_meeting_room mr
+        LEFT JOIN
+        (SELECT place,
+        CONCAT('[', GROUP_CONCAT(JSON_OBJECT('start', DATE_FORMAT(start, '%H:%i'),
+        'end', DATE_FORMAT(end, '%H:%i'),
+        'status', status,
+        'time', ROUND(TIMESTAMPDIFF(MINUTE,
+        CONCAT(date, ' ', start),
+        CONCAT(date, ' ', end)) / 30))), ']') AS meeting
+        FROM tb_meeting
+        WHERE type = 2
+        AND status != 2
+        AND date = #{date}
+        <if test="mold == '我的会议'">
+            AND JSON_CONTAINS(members, CAST(#{userId} AS CHAR))
+        </if>
+        GROUP BY place) temp
+        ON mr.name = temp.place
+        WHERE mr.status = 1
+        LIMIT #{start}, #{length}
+    </select>
+
+    <select id="searchOfflineMeetingCount" resultType="long">
+        SELECT COUNT(*)
+        FROM tb_meeting_room
+        WHERE status = 1
+    </select>
 </mapper>

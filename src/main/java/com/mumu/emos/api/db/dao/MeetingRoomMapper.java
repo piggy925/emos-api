@@ -19,4 +19,6 @@ public interface MeetingRoomMapper {
     boolean searchCanDelete(Integer[] ids);
 
     int deleteMeetingRoomByIds(Integer[] ids);
+
+    ArrayList<HashMap> searchAllMeetingRoom();
 }

@@ -48,4 +48,9 @@ public class MeetingRoomServiceImpl implements MeetingRoomService {
         }
         return meetingRoomMapper.deleteMeetingRoomByIds(ids);
     }
+
+    @Override
+    public ArrayList<HashMap> searchAllMeetingRoom() {
+        return meetingRoomMapper.searchAllMeetingRoom();
+    }
 }
