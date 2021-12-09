@@ -21,6 +21,12 @@ public interface UserMapper {
 
     long searchUserCount(HashMap param);
 
+    HashMap searchUserInfo(int userId);
+
+    Integer searchDeptManagerId(int id);
+
+    Integer searchGmId();
+
     int insert(User user);
 
     int update(HashMap param);

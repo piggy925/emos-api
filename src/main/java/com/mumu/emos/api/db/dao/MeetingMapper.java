@@ -7,4 +7,8 @@ public interface MeetingMapper {
     ArrayList<HashMap> searchOfflineMeetingByPage(HashMap param);
 
     long searchOfflineMeetingCount();
+
+    int updateMeetingInstanceId(HashMap param);
+
+    boolean searchMeetingMembersInSameDept(String uuid);
 }

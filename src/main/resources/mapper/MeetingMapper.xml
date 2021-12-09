@@ -56,4 +56,17 @@
         FROM tb_meeting_room
         WHERE status = 1
     </select>
+
+    <update id="updateMeetingInstanceId" parameterType="hashmap">
+        UPDATE tb_meeting
+        SET instance_id = #{instanceId}
+        WHERE uuid = #{uuid}
+    </update>
+
+    <select id="searchMeetingMembersInSameDept" parameterType="string" resultType="boolean">
+        SELECT IF(COUNT(DISTINCT u.dept_id) = 1, TRUE, FALSE)
+        FROM tb_meeting m
+                JOIN tb_user u ON JSON_CONTAINS(m.members, CAST(u.id AS char))
+        WHERE m.uuid = #{uuid}
+    </select>
 </mapper>
