@@ -69,4 +69,25 @@
                 JOIN tb_user u ON JSON_CONTAINS(m.members, CAST(u.id AS char))
         WHERE m.uuid = #{uuid}
     </select>
+
+    <insert id="insert" parameterType="com.mumu.emos.api.db.pojo.Meeting">
+        INSERT INTO tb_meeting
+        SET title = #{title},
+        <if test="uuid!=null">
+            uuid = #{uuid},
+        </if>
+        `date` = #{date},
+        creator_id = #{creatorId},
+        <if test="place!=null">
+            place = #{place},
+        </if>
+        `start` = #{start},
+        `end` = #{end},
+        `type` = #{type},
+        members = #{members},
+        `desc` = #{desc},
+        instance_id = #{instanceId},
+        status = #{status},
+        create_time = NOW()
+    </insert>
 </mapper>
