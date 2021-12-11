@@ -258,4 +258,10 @@
         </foreach>
         AND root = FALSE
     </delete>
+
+    <select id="searchAllUser" resultType="HashMap">
+        SELECT id, `name`
+        FROM tb_user
+        WHERE status = 1
+    </select>
 </mapper>

@@ -7,6 +7,7 @@ import com.mumu.emos.api.service.UserService;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Set;
@@ -68,5 +69,11 @@ public class UserServiceImpl implements UserService {
     @Override
     public int deleteUserByIds(Integer[] ids) {
         return userMapper.deleteUserByIds(ids);
+    }
+
+    @Override
+    public ArrayList<HashMap> searchAllUser() {
+        ArrayList<HashMap> list = userMapper.searchAllUser();
+        return list;
     }
 }

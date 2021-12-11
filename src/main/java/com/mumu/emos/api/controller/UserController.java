@@ -19,6 +19,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
 import javax.validation.Valid;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Set;
@@ -161,5 +162,13 @@ public class UserController {
             }
         }
         return R.ok().put("rows", rows);
+    }
+
+    @GetMapping("/searchAllUser")
+    @Operation(summary = "查询所有用户")
+    @SaCheckLogin
+    public R searchAllUser() {
+        ArrayList<HashMap> list = userService.searchAllUser();
+        return R.ok().put("list", list);
     }
 }

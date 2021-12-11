@@ -2,6 +2,7 @@ package com.mumu.emos.api.db.dao;
 
 import com.mumu.emos.api.db.pojo.User;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Set;
@@ -34,4 +35,6 @@ public interface UserMapper {
     HashMap searchById(int userId);
 
     int deleteUserByIds(Integer[] ids);
+
+    ArrayList<HashMap> searchAllUser();
 }
