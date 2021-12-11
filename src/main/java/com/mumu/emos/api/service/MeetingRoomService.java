@@ -7,6 +7,8 @@ import java.util.ArrayList;
 import java.util.HashMap;
 
 public interface MeetingRoomService {
+    ArrayList<String> searchFreeMeetingRoom(HashMap param);
+
     PageUtils searchMeetingRoomByPage(HashMap param);
 
     int insert(MeetingRoom meetingRoom);

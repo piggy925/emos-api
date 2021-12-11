@@ -6,6 +6,8 @@ import java.util.ArrayList;
 import java.util.HashMap;
 
 public interface MeetingRoomMapper {
+    ArrayList<String> searchFreeMeetingRoom(HashMap param);
+
     ArrayList<HashMap> searchMeetingRoomByPage(HashMap param);
 
     long searchMeetingRoomCount(HashMap param);

@@ -15,6 +15,21 @@
         id, `name`, `max`, `desc`, `status`
     </sql>
 
+    <select id="searchFreeMeetingRoom" parameterType="HashMap" resultType="String">
+        SELECT temp.name
+        FROM (
+                SELECT mr.`name`, m.id
+                FROM tb_meeting_room mr
+                        LEFT JOIN tb_meeting m ON mr.`name` = m.place
+                        AND m.date = #{date}
+                        AND (
+                                                          (#{start} BETWEEN m.`start` AND m.`end`) OR
+                                                          (#{end} BETWEEN m.`start` AND m.`end`)
+                                                          )
+                ) temp
+        WHERE temp.id IS NULL
+    </select>
+
     <select id="searchMeetingRoomByPage" parameterType="HashMap" resultType="HashMap">
         SELECT mr.id,
         mr.`name`,

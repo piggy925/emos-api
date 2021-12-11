@@ -17,6 +17,12 @@ public class MeetingRoomServiceImpl implements MeetingRoomService {
     private MeetingRoomMapper meetingRoomMapper;
 
     @Override
+    public ArrayList<String> searchFreeMeetingRoom(HashMap param) {
+        ArrayList<String> list = meetingRoomMapper.searchFreeMeetingRoom(param);
+        return list;
+    }
+
+    @Override
     public PageUtils searchMeetingRoomByPage(HashMap param) {
         ArrayList<HashMap> list = meetingRoomMapper.searchMeetingRoomByPage(param);
         long count = meetingRoomMapper.searchMeetingRoomCount(param);

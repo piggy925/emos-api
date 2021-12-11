@@ -23,6 +23,15 @@ public class MeetingRoomController {
     @Resource
     private MeetingRoomService meetingRoomService;
 
+    @PostMapping("/searchFreeMeetingRoom")
+    @Operation(summary = "查询空闲会议室")
+    @SaCheckLogin
+    public R searchFreeMeetingRoom(@Valid @RequestBody SearchFreeMeetingRoomForm form) {
+        HashMap param = JSONUtil.parse(form).toBean(HashMap.class);
+        ArrayList<String> list = meetingRoomService.searchFreeMeetingRoom(param);
+        return R.ok().put("list", list);
+    }
+
     @PostMapping("/searchMeetingRoomByPage")
     @Operation(summary = "查询会议室分页数据")
     @SaCheckLogin
