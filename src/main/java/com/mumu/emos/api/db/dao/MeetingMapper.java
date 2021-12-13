@@ -15,4 +15,10 @@ public interface MeetingMapper {
     boolean searchMeetingMembersInSameDept(String uuid);
 
     int insert(Meeting meeting);
+
+    ArrayList<HashMap> searchOfflineMeetingInWeeks(HashMap param);
+
+    HashMap searchMeetingInfo(long id);
+
+    HashMap searchCurrentMeetingInfo(long id);
 }

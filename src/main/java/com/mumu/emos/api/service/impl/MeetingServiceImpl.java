@@ -47,4 +47,22 @@ public class MeetingServiceImpl implements MeetingService {
         meetingWorkFlowTask.startMeetingWorkFlow(meeting.getUuid(), meeting.getCreatorId(), meeting.getTitle(), meeting.getDate(), meeting.getStart() + ":00", "线下会议");
         return rows;
     }
+
+    @Override
+    public ArrayList<HashMap> searchOfflineMeetingInWeek(HashMap param) {
+        return meetingMapper.searchOfflineMeetingInWeeks(param);
+    }
+
+    @Override
+    public HashMap searchMeetingInfo(short status, long id) {
+        HashMap map;
+
+        //正在进行与已结束的会议可以查看出席员工present与未出席员工unpresent
+        if (status == 4 || status == 5) {
+            map = meetingMapper.searchCurrentMeetingInfo(id);
+        } else {
+            map = meetingMapper.searchMeetingInfo(id);
+        }
+        return map;
+    }
 }

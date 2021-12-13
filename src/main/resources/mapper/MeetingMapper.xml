@@ -90,4 +90,57 @@
         status = #{status},
         create_time = NOW()
     </insert>
+
+    <select id="searchOfflineMeetingInWeeks" resultType="java.util.HashMap" parameterType="hashmap">
+        SELECT id,
+        title,
+        DATE_FORMAT(date, '%m/%d') AS date,
+        DATE_FORMAT(start, '%H:%i') AS start,
+        ROUND(TIMESTAMPDIFF(MINUTE,
+        CONCAT(date, ' ', start),
+        CONCAT(date, ' ', end)) / 30) AS time,
+        uuid,
+        instance_id AS instanceId,
+        IF(creator_id = #{userId}, TRUE, FALSE) AS isCreator,
+        status
+        FROM tb_meeting
+        WHERE type = 2
+        AND place = #{place}
+        AND status != 2
+        AND date BETWEEN #{start} AND #{end}
+        <if test="mold == '我的会议'">
+            AND JSON_CONTAINS(members, CAST(#{userId} AS CHAR))
+        </if>
+    </select>
+
+    <select id="searchMeetingInfo" resultType="java.util.HashMap" parameterType="int">
+        SELECT m.title,
+               m.date,
+               m.place,
+               DATE_FORMAT(start, '%H:%i')                                                                 AS start,
+               DATE_FORMAT(end, '%H:%i')                                                                   AS end,
+               m.status,
+               CONCAT('[', GROUP_CONCAT(JSON_OBJECT("name", u.name, "photo", u.photo) SEPARATOR '，'), ']') AS members
+        FROM tb_meeting m
+                LEFT JOIN tb_user u ON JSON_CONTAINS(m.members, CAST(u.id AS char))
+        WHERE m.id = #{id}
+          AND u.status = 1
+    </select>
+
+    <select id="searchCurrentMeetingInfo" resultType="java.util.HashMap" parameterType="int">
+        SELECT m.title,
+               m.date,
+               m.place,
+               DATE_FORMAT(start, '%H:%i')                            AS start,
+               DATE_FORMAT(end, '%H:%i')                              AS end,
+               m.status,
+               (SELECT CONCAT('[', GROUP_CONCAT(JSON_OBJECT("name", u.name, "photo", u.photo) SEPARATOR '，'), ']')
+                FROM tb_user u
+                WHERE JSON_CONTAINS(m.present, CAST(u.id AS char)))   AS present,
+               (SELECT CONCAT('[', GROUP_CONCAT(JSON_OBJECT("name", u.name, "photo", u.photo) SEPARATOR '，'), ']')
+                FROM tb_user u
+                WHERE JSON_CONTAINS(m.unpresent, CAST(u.id AS char))) AS unpresent
+        FROM tb_meeting m
+        WHERE m.id = #{id}
+    </select>
 </mapper>
