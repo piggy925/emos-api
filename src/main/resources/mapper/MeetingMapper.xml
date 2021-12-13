@@ -113,7 +113,7 @@
         </if>
     </select>
 
-    <select id="searchMeetingInfo" resultType="java.util.HashMap" parameterType="int">
+    <select id="searchMeetingInfo" resultType="java.util.HashMap" parameterType="long">
         SELECT m.title,
                m.date,
                m.place,
