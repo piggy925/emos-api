@@ -120,7 +120,7 @@
                DATE_FORMAT(start, '%H:%i')                                                                 AS start,
                DATE_FORMAT(end, '%H:%i')                                                                   AS end,
                m.status,
-               CONCAT('[', GROUP_CONCAT(JSON_OBJECT("name", u.name, "photo", u.photo) SEPARATOR '，'), ']') AS members
+               CONCAT('[', GROUP_CONCAT(JSON_OBJECT("name", u.name, "photo", u.photo) SEPARATOR ','), ']') AS members
         FROM tb_meeting m
                 LEFT JOIN tb_user u ON JSON_CONTAINS(m.members, CAST(u.id AS char))
         WHERE m.id = #{id}
