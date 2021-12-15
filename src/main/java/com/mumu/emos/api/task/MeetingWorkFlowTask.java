@@ -82,4 +82,23 @@ public class MeetingWorkFlowTask {
             log.error(resp.body());
         }
     }
+
+    @Async("AsyncTaskExecutor")
+    public void deleteMeetingApplication(String uuid, String instanceId, String reason) {
+        JSONObject json = new JSONObject();
+        json.set("uuid", uuid);
+        json.set("instanceId", instanceId);
+        json.set("code", code);
+        json.set("tcode", tcode);
+        json.set("reason", reason);
+        json.set("type", "会议申请");
+
+        String url = workflow + "/workflow/deleteProcessById";
+        HttpResponse resp = HttpRequest.post(url).header("Content-Type", "application/json").body(json.toString()).execute();
+        if (resp.getStatus() == 200) {
+            log.debug("删除会议申请成功");
+        } else {
+            log.error(resp.body());
+        }
+    }
 }

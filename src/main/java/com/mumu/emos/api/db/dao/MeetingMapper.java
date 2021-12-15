@@ -21,4 +21,8 @@ public interface MeetingMapper {
     HashMap searchMeetingInfo(long id);
 
     HashMap searchCurrentMeetingInfo(long id);
+
+    int deleteMeetingApplication(HashMap param);
+
+    HashMap searchMeetingById(HashMap param);
 }

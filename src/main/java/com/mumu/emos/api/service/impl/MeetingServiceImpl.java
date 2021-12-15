@@ -1,5 +1,9 @@
 package com.mumu.emos.api.service.impl;
 
+import cn.hutool.core.date.DateField;
+import cn.hutool.core.date.DateTime;
+import cn.hutool.core.date.DateUtil;
+import cn.hutool.core.map.MapUtil;
 import cn.hutool.json.JSONUtil;
 import com.mumu.emos.api.common.util.PageUtils;
 import com.mumu.emos.api.db.dao.MeetingMapper;
@@ -64,5 +68,38 @@ public class MeetingServiceImpl implements MeetingService {
             map = meetingMapper.searchMeetingInfo(id);
         }
         return map;
+    }
+
+    @Override
+    public int deleteMeetingApplication(HashMap param) {
+        String uuid = MapUtil.getStr(param, "uuid");
+        String reason = MapUtil.getStr(param, "reason");
+        String instanceId = MapUtil.getStr(param, "instanceId");
+
+        HashMap meeting = meetingMapper.searchMeetingById(param);
+        int status = MapUtil.getInt(meeting, "status");
+        String date = MapUtil.getStr(meeting, "date");
+        String start = MapUtil.getStr(meeting, "start");
+        DateTime dateTime = DateUtil.parseDate(date + " " + start);
+        boolean isCreator = Boolean.parseBoolean(MapUtil.getStr(meeting, "isCreator"));
+
+        // 只有距离开始时间大于20分钟的会议能被删除
+        if (DateTime.now().isAfterOrEquals(dateTime.offset(DateField.MINUTE, -20))) {
+            throw new EmosException("会议距开始不足20分钟，无法删除");
+        }
+        // 只有会议创建者能删除会议
+        if (!isCreator) {
+            throw new EmosException("您不是会议创建人，无法删除会议");
+        }
+        // 只有待审批与未开始的会议能被删除
+        if (status == 1 || status == 3) {
+            int rows = meetingMapper.deleteMeetingApplication(param);
+            if (rows == 1) {
+                meetingWorkFlowTask.deleteMeetingApplication(uuid, instanceId, reason);
+            }
+            return rows;
+        } else {
+            throw new EmosException("只能删除待审批和未开始的会议");
+        }
     }
 }

@@ -11,10 +11,7 @@ import cn.hutool.json.JSONObject;
 import cn.hutool.json.JSONUtil;
 import com.mumu.emos.api.common.util.PageUtils;
 import com.mumu.emos.api.common.util.R;
-import com.mumu.emos.api.controller.form.InsertMeetingForm;
-import com.mumu.emos.api.controller.form.SearchMeetingInfoForm;
-import com.mumu.emos.api.controller.form.SearchOfflineMeetingByPageForm;
-import com.mumu.emos.api.controller.form.SearchOfflineMeetingInWeekForm;
+import com.mumu.emos.api.controller.form.*;
 import com.mumu.emos.api.db.pojo.Meeting;
 import com.mumu.emos.api.exception.EmosException;
 import com.mumu.emos.api.service.MeetingService;
@@ -132,5 +129,16 @@ public class MeetingController {
     public R searchMeetingInfo(@Valid @RequestBody SearchMeetingInfoForm form) {
         HashMap map = meetingService.searchMeetingInfo(form.getStatus(), form.getId());
         return R.ok(map);
+    }
+
+    @PostMapping("/deleteMeetingApplication")
+    @Operation(summary = "删除会议")
+    @SaCheckLogin
+    public R deleteMeetingApplication(@Valid @RequestBody DeleteMeetingApplicationForm form) {
+        HashMap param = JSONUtil.parse(form).toBean(HashMap.class);
+        param.put("creatorId", StpUtil.getLoginIdAsLong());
+        param.put("userId", StpUtil.getLoginIdAsLong());
+        int rows = meetingService.deleteMeetingApplication(param);
+        return R.ok().put("rows", rows);
     }
 }

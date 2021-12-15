@@ -14,4 +14,6 @@ public interface MeetingService {
     ArrayList<HashMap> searchOfflineMeetingInWeek(HashMap param);
 
     HashMap searchMeetingInfo(short status, long id);
+
+    int deleteMeetingApplication(HashMap param);
 }
