@@ -76,4 +76,10 @@ public class UserServiceImpl implements UserService {
         ArrayList<HashMap> list = userMapper.searchAllUser();
         return list;
     }
+
+    @Override
+    public ArrayList<String> searchUserRoles(int userId) {
+        return userMapper.searchUserRoles(userId);
+    }
+
 }

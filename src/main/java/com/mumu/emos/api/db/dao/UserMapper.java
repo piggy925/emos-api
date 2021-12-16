@@ -37,4 +37,6 @@ public interface UserMapper {
     int deleteUserByIds(Integer[] ids);
 
     ArrayList<HashMap> searchAllUser();
+
+    ArrayList<String> searchUserRoles(int userId);
 }
