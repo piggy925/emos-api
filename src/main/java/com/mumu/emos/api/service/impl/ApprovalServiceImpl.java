@@ -45,4 +45,20 @@ public class ApprovalServiceImpl implements ApprovalService {
             throw new EmosException("获取工作流数据异常");
         }
     }
+
+    @Override
+    public HashMap searchApprovalContent(HashMap param) {
+        param.put("code", code);
+        param.put("tcode", tcode);
+        String url = workflow + "/workflow/searchApprovalContent";
+        HttpResponse resp = HttpRequest.post(url).header("Content-Type", "application/json").body(JSONUtil.toJsonStr(param)).execute();
+        if (resp.getStatus() == 200) {
+            JSONObject json = JSONUtil.parseObj(resp.body());
+            HashMap content = json.get("content", HashMap.class);
+            return content;
+        } else {
+            log.error(resp.body());
+            throw new EmosException("获取工作流数据异常");
+        }
+    }
 }
