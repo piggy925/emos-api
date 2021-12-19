@@ -10,6 +10,7 @@ import cn.hutool.http.HttpResponse;
 import cn.hutool.json.JSONUtil;
 import com.mumu.emos.api.common.util.PageUtils;
 import com.mumu.emos.api.common.util.R;
+import com.mumu.emos.api.controller.form.ApprovalTaskForm;
 import com.mumu.emos.api.controller.form.SearchApprovalContentForm;
 import com.mumu.emos.api.controller.form.SearchTaskByPageForm;
 import com.mumu.emos.api.exception.EmosException;
@@ -103,5 +104,14 @@ public class ApprovalController {
             log.error("获取工作流BPMN失败");
             throw new EmosException("获取工作流BPMN失败");
         }
+    }
+
+    @PostMapping("/approvalTask")
+    @Operation(summary = "审批任务")
+    @SaCheckPermission(value = {"WORKFLOW:APPROVAL"})
+    public R approvalTask(@Valid @RequestBody ApprovalTaskForm form) {
+        HashMap param = JSONUtil.parse(form).toBean(HashMap.class);
+        approvalService.approvalTask(param);
+        return R.ok();
     }
 }

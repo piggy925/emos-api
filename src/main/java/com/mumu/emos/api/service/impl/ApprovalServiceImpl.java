@@ -61,4 +61,16 @@ public class ApprovalServiceImpl implements ApprovalService {
             throw new EmosException("获取工作流数据异常");
         }
     }
+
+    @Override
+    public void approvalTask(HashMap param) {
+        param.put("code", code);
+        param.put("tcode", tcode);
+        String url = workflow + "/workflow/approvalTask";
+        HttpResponse resp = HttpRequest.post(url).header("Content-Type", "application/json").body(JSONUtil.toJsonStr(param)).execute();
+        if (resp.getStatus() != 200) {
+            log.error(resp.body());
+            throw new EmosException("工作流调用异常");
+        }
+    }
 }

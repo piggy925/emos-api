@@ -8,4 +8,6 @@ public interface ApprovalService {
     PageUtils searchTaskByPage(HashMap param);
 
     HashMap searchApprovalContent(HashMap param);
+
+    void approvalTask(HashMap param);
 }
