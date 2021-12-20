@@ -141,4 +141,22 @@ public class MeetingController {
         int rows = meetingService.deleteMeetingApplication(param);
         return R.ok().put("rows", rows);
     }
+
+    @PostMapping("/searchOnlineMeetingByPage")
+    @Operation(summary = "查询线上会议分页数据")
+    @SaCheckLogin
+    public R searchOnlineMeetingByPage(@Valid @RequestBody SearchOnlineMeetingByPageForm form) {
+        int page = form.getPage();
+        int length = form.getLength();
+        int start = (page - 1) * length;
+        HashMap param = new HashMap() {{
+            put("date", form.getDate());
+            put("mold", form.getMold());
+            put("userId", StpUtil.getLoginId());
+            put("start", start);
+            put("length", length);
+        }};
+        PageUtils pageUtils = meetingService.searchOnlineMeetingByPage(param);
+        return R.ok().put("page", pageUtils);
+    }
 }

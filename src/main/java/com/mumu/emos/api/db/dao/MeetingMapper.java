@@ -25,4 +25,8 @@ public interface MeetingMapper {
     int deleteMeetingApplication(HashMap param);
 
     HashMap searchMeetingById(HashMap param);
+
+    ArrayList<HashMap> searchOnlineMeetingByPage(HashMap param);
+
+    long searchOnlineMeetingCount(HashMap param);
 }

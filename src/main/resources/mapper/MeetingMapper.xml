@@ -170,4 +170,44 @@
         WHERE m.id = #{id}
           AND u.status = 1
     </select>
+
+
+    <select id="searchOnlineMeetingByPage" parameterType="HashMap" resultType="HashMap">
+        SELECT m.id,
+        m.title,
+        u.`name` AS creatorName,
+        IF( creator_id = #{userId}, 'true', 'false' ) AS isCreator,
+        IF(JSON_CONTAINS(m.members,CAST(#{userId} AS CHAR))=1, 'true', 'false') AS mine,
+        m.date,
+        DATE_FORMAT(m.`start`,'%H:%i') AS `start`,
+        DATE_FORMAT(m.`end`,'%H:%i') AS `end`,
+        JSON_LENGTH ( m.members ) AS num,
+        m.`status`,
+        m.`desc`,
+        m.uuid,
+        m.instance_id AS instanceId
+        FROM tb_meeting m
+        JOIN tb_user u ON m.creator_id = u.id
+        WHERE m.type = 1 AND m.`status` != 2
+        <if test="date!=null">
+            AND m.date = #{date}
+        </if>
+        <if test="mold=='我的会议'">
+            AND JSON_CONTAINS(m.members, CAST(#{userId} AS CHAR))
+        </if>
+        ORDER BY m.id DESC
+        LIMIT #{start}, #{length}
+    </select>
+
+    <select id="searchOnlineMeetingCount" parameterType="HashMap" resultType="long">
+        SELECT COUNT(*)
+        FROM tb_meeting
+        WHERE type = 1 AND `status` != 2
+        <if test="date!=null">
+            AND date = #{date}
+        </if>
+        <if test="mold=='我的会议'">
+            AND JSON_CONTAINS(members, CAST(#{userId} AS CHAR))
+        </if>
+    </select>
 </mapper>

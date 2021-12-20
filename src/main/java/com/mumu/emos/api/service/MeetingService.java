@@ -16,4 +16,6 @@ public interface MeetingService {
     HashMap searchMeetingInfo(short status, long id);
 
     int deleteMeetingApplication(HashMap param);
+
+    PageUtils searchOnlineMeetingByPage(HashMap param);
 }

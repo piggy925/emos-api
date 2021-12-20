@@ -102,4 +102,14 @@ public class MeetingServiceImpl implements MeetingService {
             throw new EmosException("只能删除待审批和未开始的会议");
         }
     }
+
+    @Override
+    public PageUtils searchOnlineMeetingByPage(HashMap param) {
+        ArrayList<HashMap> list = meetingMapper.searchOnlineMeetingByPage(param);
+        long count = meetingMapper.searchOnlineMeetingCount(param);
+        int start = (Integer) param.get("start");
+        int length = (Integer) param.get("length");
+        PageUtils pageUtils = new PageUtils(list, count, start, length);
+        return pageUtils;
+    }
 }
