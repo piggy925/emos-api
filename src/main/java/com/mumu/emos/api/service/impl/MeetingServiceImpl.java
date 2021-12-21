@@ -12,6 +12,7 @@ import com.mumu.emos.api.exception.EmosException;
 import com.mumu.emos.api.service.MeetingService;
 import com.mumu.emos.api.task.MeetingWorkFlowTask;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
 import org.springframework.util.ObjectUtils;
 
@@ -26,6 +27,8 @@ public class MeetingServiceImpl implements MeetingService {
     private MeetingMapper meetingMapper;
     @Resource
     private MeetingWorkFlowTask meetingWorkFlowTask;
+    @Resource
+    private RedisTemplate redisTemplate;
 
     @Override
     public PageUtils searchOfflineMeetingByPage(HashMap param) {
@@ -112,5 +115,15 @@ public class MeetingServiceImpl implements MeetingService {
         int length = (Integer) param.get("length");
         PageUtils pageUtils = new PageUtils(list, count, start, length);
         return pageUtils;
+    }
+
+    @Override
+    public Long searchRoomIdByUUID(String uuid) {
+        if (redisTemplate.hasKey(uuid)) {
+            Object temp = redisTemplate.opsForValue().get(uuid);
+            return Long.parseLong(temp.toString());
+        } else {
+            return null;
+        }
     }
 }

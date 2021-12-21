@@ -18,4 +18,6 @@ public interface MeetingService {
     int deleteMeetingApplication(HashMap param);
 
     PageUtils searchOnlineMeetingByPage(HashMap param);
+
+    Long searchRoomIdByUUID(String uuid);
 }

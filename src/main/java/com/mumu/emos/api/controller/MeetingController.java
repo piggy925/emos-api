@@ -11,6 +11,7 @@ import cn.hutool.json.JSONObject;
 import cn.hutool.json.JSONUtil;
 import com.mumu.emos.api.common.util.PageUtils;
 import com.mumu.emos.api.common.util.R;
+import com.mumu.emos.api.config.tencent.TrtcUtil;
 import com.mumu.emos.api.controller.form.*;
 import com.mumu.emos.api.db.pojo.Meeting;
 import com.mumu.emos.api.exception.EmosException;
@@ -18,6 +19,7 @@ import com.mumu.emos.api.service.MeetingService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.util.ObjectUtils;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -35,6 +37,12 @@ import java.util.HashMap;
 @RequestMapping("/meeting")
 @Tag(name = "MeetingController", description = "会议Web接口")
 public class MeetingController {
+    @Value("${tencent.trtc.appId}")
+    private int appId;
+
+    @Resource
+    private TrtcUtil trtcUtil;
+
     @Resource
     private MeetingService meetingService;
 
@@ -158,5 +166,22 @@ public class MeetingController {
         }};
         PageUtils pageUtils = meetingService.searchOnlineMeetingByPage(param);
         return R.ok().put("page", pageUtils);
+    }
+
+    @PostMapping("/searchMyUserSig")
+    @Operation(summary = "获取用户签名")
+    @SaCheckLogin
+    public R searchMyUserSig() {
+        String userId = StpUtil.getLoginIdAsString();
+        String userSig = trtcUtil.genUserSig(userId);
+        return R.ok().put("userSig", userSig).put("userId", userId).put("appId", appId);
+    }
+
+    @PostMapping("/searchRoomIdByUUID")
+    @Operation(summary = "查询线上会议roomId")
+    @SaCheckLogin
+    public R searchRoomIdByUUID(@Valid @RequestBody SearchRoomIdByUUIDForm form) {
+        Long roomId = meetingService.searchRoomIdByUUID(form.getUuid());
+        return R.ok().put("roomId", roomId);
     }
 }
