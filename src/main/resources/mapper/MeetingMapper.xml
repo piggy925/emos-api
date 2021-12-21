@@ -210,4 +210,14 @@
             AND JSON_CONTAINS(members, CAST(#{userId} AS CHAR))
         </if>
     </select>
+
+    <select id="searchOnlineMeetingMembers" parameterType="hashmap" resultType="hashmap">
+        SELECT u.id, u.name, u.photo, IF(u.id = #{userId}, 1, 0) AS mine
+        FROM tb_meeting m
+                LEFT JOIN tb_user u
+                ON JSON_CONTAINS(m.members, CAST(u.id AS char))
+        WHERE u.status = '1'
+          AND m.id = #{meetingId}
+        ORDER BY mine DESC
+    </select>
 </mapper>

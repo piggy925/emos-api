@@ -184,4 +184,14 @@ public class MeetingController {
         Long roomId = meetingService.searchRoomIdByUUID(form.getUuid());
         return R.ok().put("roomId", roomId);
     }
+
+    @PostMapping("/searchOnlineMeetingMembers")
+    @Operation(summary = "查询线上会议参会人")
+    @SaCheckLogin
+    public R searchOnlineMeetingMembers(@Valid @RequestBody SearchOnlineMeetingMembersForm form) {
+        HashMap param = JSONUtil.parse(form).toBean(HashMap.class);
+        param.put("userId", StpUtil.getLoginIdAsInt());
+        ArrayList<HashMap> list = meetingService.searchOnlineMeetingMembers(param);
+        return R.ok().put("list", list);
+    }
 }

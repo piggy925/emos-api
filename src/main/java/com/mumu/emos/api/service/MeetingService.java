@@ -20,4 +20,6 @@ public interface MeetingService {
     PageUtils searchOnlineMeetingByPage(HashMap param);
 
     Long searchRoomIdByUUID(String uuid);
+
+    ArrayList<HashMap> searchOnlineMeetingMembers(HashMap param);
 }

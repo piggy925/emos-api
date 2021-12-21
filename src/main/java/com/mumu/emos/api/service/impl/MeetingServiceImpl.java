@@ -126,4 +126,9 @@ public class MeetingServiceImpl implements MeetingService {
             return null;
         }
     }
+
+    @Override
+    public ArrayList<HashMap> searchOnlineMeetingMembers(HashMap param) {
+        return meetingMapper.searchOnlineMeetingMembers(param);
+    }
 }

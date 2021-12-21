@@ -29,4 +29,6 @@ public interface MeetingMapper {
     ArrayList<HashMap> searchOnlineMeetingByPage(HashMap param);
 
     long searchOnlineMeetingCount(HashMap param);
+
+    ArrayList<HashMap> searchOnlineMeetingMembers(HashMap param);
 }
