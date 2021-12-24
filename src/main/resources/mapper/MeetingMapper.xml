@@ -37,7 +37,8 @@
         'status', status,
         'time', ROUND(TIMESTAMPDIFF(MINUTE,
         CONCAT(date, ' ', start),
-        CONCAT(date, ' ', end)) / 30))), ']') AS meeting
+        CONCAT(date, ' ', end)) /
+        30))), ']') AS meeting
         FROM tb_meeting
         WHERE type = 2
         AND status != 2
@@ -73,12 +74,12 @@
     <insert id="insert" parameterType="com.mumu.emos.api.db.pojo.Meeting">
         INSERT INTO tb_meeting
         SET title = #{title},
-        <if test="uuid!=null">
+        <if test="uuid != null">
             uuid = #{uuid},
         </if>
         `date` = #{date},
         creator_id = #{creatorId},
-        <if test="place!=null">
+        <if test="place != null">
             place = #{place},
         </if>
         `start` = #{start},
@@ -176,24 +177,25 @@
         SELECT m.id,
         m.title,
         u.`name` AS creatorName,
-        IF( creator_id = #{userId}, 'true', 'false' ) AS isCreator,
-        IF(JSON_CONTAINS(m.members,CAST(#{userId} AS CHAR))=1, 'true', 'false') AS mine,
+        IF(creator_id = #{userId}, 'true', 'false') AS isCreator,
+        IF(JSON_CONTAINS(m.members, CAST(#{userId} AS char)) = 1, 'true', 'false') AS mine,
         m.date,
-        DATE_FORMAT(m.`start`,'%H:%i') AS `start`,
-        DATE_FORMAT(m.`end`,'%H:%i') AS `end`,
-        JSON_LENGTH ( m.members ) AS num,
+        DATE_FORMAT(m.`start`, '%H:%i') AS `start`,
+        DATE_FORMAT(m.`end`, '%H:%i') AS `end`,
+        JSON_LENGTH(m.members) AS num,
         m.`status`,
         m.`desc`,
         m.uuid,
         m.instance_id AS instanceId
         FROM tb_meeting m
         JOIN tb_user u ON m.creator_id = u.id
-        WHERE m.type = 1 AND m.`status` != 2
-        <if test="date!=null">
+        WHERE m.type = 1
+        AND m.`status` != 2
+        <if test="date != null">
             AND m.date = #{date}
         </if>
-        <if test="mold=='我的会议'">
-            AND JSON_CONTAINS(m.members, CAST(#{userId} AS CHAR))
+        <if test="mold == '我的会议'">
+            AND JSON_CONTAINS(m.members, CAST(#{userId} AS char))
         </if>
         ORDER BY m.id DESC
         LIMIT #{start}, #{length}
@@ -202,22 +204,46 @@
     <select id="searchOnlineMeetingCount" parameterType="HashMap" resultType="long">
         SELECT COUNT(*)
         FROM tb_meeting
-        WHERE type = 1 AND `status` != 2
-        <if test="date!=null">
+        WHERE type = 1
+        AND `status` != 2
+        <if test="date != null">
             AND date = #{date}
         </if>
-        <if test="mold=='我的会议'">
-            AND JSON_CONTAINS(members, CAST(#{userId} AS CHAR))
+        <if test="mold == '我的会议'">
+            AND JSON_CONTAINS(members, CAST(#{userId} AS char))
         </if>
     </select>
 
     <select id="searchOnlineMeetingMembers" parameterType="hashmap" resultType="hashmap">
         SELECT u.id, u.name, u.photo, IF(u.id = #{userId}, 1, 0) AS mine
         FROM tb_meeting m
-                LEFT JOIN tb_user u
-                ON JSON_CONTAINS(m.members, CAST(u.id AS char))
+        LEFT JOIN tb_user u
+        ON JSON_CONTAINS(m.members, CAST(u.id AS char))
         WHERE u.status = '1'
-          AND m.id = #{meetingId}
+        AND m.id = #{meetingId}
         ORDER BY mine DESC
     </select>
+
+    <select id="searchCanCheckinMeeting" resultType="long" parameterType="hashmap">
+        SELECT COUNT(*)
+        FROM tb_meeting
+        WHERE id = #{meetingId}
+        AND status IN (3, 4)
+        AND NOW() BETWEEN DATE_SUB(CONCAT(date, ' ', start), INTERVAL 15 MINUTE) AND DATE_SUB(CONCAT(date, ' ', end),
+        INTERVAL
+        15 MINUTE)
+        AND JSON_CONTAINS(IFNULL(members, JSON_ARRAY()), CAST(#{userId} AS char))
+        AND NOT JSON_CONTAINS(IFNULL(present, JSON_ARRAY()), CAST(#{userId} AS char));
+    </select>
+
+    <update id="updateMeetingPresent" parameterType="hashmap">
+        UPDATE tb_meeting
+        SET present = JSON_ARRAY_APPEND(IFNULL(present, JSON_ARRAY()), '$', #{userId})
+        WHERE id = #{meetingId}
+        AND NOW() BETWEEN DATE_SUB(CONCAT(date, ' ', start), INTERVAL 15 MINUTE) AND DATE_SUB(CONCAT(date, ' ', end),
+        INTERVAL
+        15 MINUTE)
+        AND JSON_CONTAINS(IFNULL(members, JSON_ARRAY()), CAST(#{userId} AS char))
+        AND NOT JSON_CONTAINS(IFNULL(present, JSON_ARRAY()), CAST(#{userId} AS char));
+    </update>
 </mapper>

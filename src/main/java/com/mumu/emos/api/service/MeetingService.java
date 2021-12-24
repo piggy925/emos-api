@@ -22,4 +22,8 @@ public interface MeetingService {
     Long searchRoomIdByUUID(String uuid);
 
     ArrayList<HashMap> searchOnlineMeetingMembers(HashMap param);
+
+    boolean searchCanCheckinMeeting(HashMap param);
+
+    int updateMeetingPresent(HashMap param);
 }

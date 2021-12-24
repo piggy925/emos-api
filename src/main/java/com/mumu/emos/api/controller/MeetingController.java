@@ -191,4 +191,19 @@ public class MeetingController {
         ArrayList<HashMap> list = meetingService.searchOnlineMeetingMembers(param);
         return R.ok().put("list", list);
     }
+
+    @PostMapping("/updateMeetingPresent")
+    @Operation(summary = "线上会议签到")
+    @SaCheckLogin
+    public R updateMeetingPresent(@Valid @RequestBody UpdateMeetingPresentForm form) {
+        HashMap param = JSONUtil.parse(form).toBean(HashMap.class);
+        param.put("userId", StpUtil.getLoginIdAsInt());
+
+        int rows = 0;
+        boolean canCheckin = meetingService.searchCanCheckinMeeting(param);
+        if (canCheckin) {
+            rows = meetingService.updateMeetingPresent(param);
+        }
+        return R.ok().put("rows", rows);
+    }
 }

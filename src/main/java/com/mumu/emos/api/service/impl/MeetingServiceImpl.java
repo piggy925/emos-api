@@ -131,4 +131,15 @@ public class MeetingServiceImpl implements MeetingService {
     public ArrayList<HashMap> searchOnlineMeetingMembers(HashMap param) {
         return meetingMapper.searchOnlineMeetingMembers(param);
     }
+
+    @Override
+    public boolean searchCanCheckinMeeting(HashMap param) {
+        long count = meetingMapper.searchCanCheckinMeeting(param);
+        return count == 1;
+    }
+
+    @Override
+    public int updateMeetingPresent(HashMap param) {
+        return meetingMapper.updateMeetingPresent(param);
+    }
 }
