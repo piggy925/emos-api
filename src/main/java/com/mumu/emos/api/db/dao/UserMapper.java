@@ -39,4 +39,6 @@ public interface UserMapper {
     ArrayList<HashMap> searchAllUser();
 
     ArrayList<String> searchUserRoles(int userId);
+
+    HashMap searchNameAndDept(int userId);
 }

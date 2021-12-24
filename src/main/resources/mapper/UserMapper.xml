@@ -268,7 +268,15 @@
     <select id="searchUserRoles" parameterType="int" resultType="string">
         SELECT r.role_name AS roleName
         FROM tb_role r
-                LEFT JOIN tb_user u ON JSON_CONTAINS(u.role, CAST(r.id AS char))
+        LEFT JOIN tb_user u ON JSON_CONTAINS(u.role, CAST(r.id AS char))
         WHERE u.id = #{userId}
+    </select>
+
+    <select id="searchNameAndDept" resultType="java.util.HashMap" parameterType="int">
+        SELECT u.name, d.dept_name AS dept
+        FROM tb_user u
+        LEFT JOIN tb_dept d ON u.dept_id = d.id
+        WHERE u.id = #{userId}
+        AND u.status = '1'
     </select>
 </mapper>

@@ -31,4 +31,6 @@ public interface UserService {
     ArrayList<HashMap> searchAllUser();
 
     ArrayList<String> searchUserRoles(int userId);
+
+    HashMap searchNameAndDept(int userId);
 }

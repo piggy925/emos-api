@@ -82,4 +82,8 @@ public class UserServiceImpl implements UserService {
         return userMapper.searchUserRoles(userId);
     }
 
+    @Override
+    public HashMap searchNameAndDept(int userId) {
+        return userMapper.searchNameAndDept(userId);
+    }
 }

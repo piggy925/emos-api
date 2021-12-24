@@ -171,4 +171,12 @@ public class UserController {
         ArrayList<HashMap> list = userService.searchAllUser();
         return R.ok().put("list", list);
     }
+
+    @PostMapping("/searchNameAndDept")
+    @Operation(summary = "查询用户的姓名与所在部门")
+    @SaCheckLogin
+    public R searchNameAndDept(@Valid @RequestBody SearchNameAndDeptForm form) {
+        HashMap map = userService.searchNameAndDept(form.getUserId());
+        return R.ok(map);
+    }
 }
