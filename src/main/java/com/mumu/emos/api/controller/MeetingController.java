@@ -21,10 +21,7 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.util.ObjectUtils;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
 import javax.validation.Valid;
@@ -168,7 +165,7 @@ public class MeetingController {
         return R.ok().put("page", pageUtils);
     }
 
-    @PostMapping("/searchMyUserSig")
+    @GetMapping("/searchMyUserSig")
     @Operation(summary = "获取用户签名")
     @SaCheckLogin
     public R searchMyUserSig() {
