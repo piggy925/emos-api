@@ -128,19 +128,19 @@
           AND u.status = 1
     </select>
 
-    <select id="searchCurrentMeetingInfo" resultType="java.util.HashMap" parameterType="int">
+    <select id="searchCurrentMeetingInfo" resultType="java.util.HashMap" parameterType="long">
         SELECT m.title,
-               m.date,
-               m.place,
-               DATE_FORMAT(start, '%H:%i')                            AS start,
-               DATE_FORMAT(end, '%H:%i')                              AS end,
-               m.status,
-               (SELECT CONCAT('[', GROUP_CONCAT(JSON_OBJECT("name", u.name, "photo", u.photo) SEPARATOR '，'), ']')
-                FROM tb_user u
-                WHERE JSON_CONTAINS(m.present, CAST(u.id AS char)))   AS present,
-               (SELECT CONCAT('[', GROUP_CONCAT(JSON_OBJECT("name", u.name, "photo", u.photo) SEPARATOR '，'), ']')
-                FROM tb_user u
-                WHERE JSON_CONTAINS(m.unpresent, CAST(u.id AS char))) AS unpresent
+        m.date,
+        m.place,
+        DATE_FORMAT(start, '%H:%i') AS start,
+        DATE_FORMAT(end, '%H:%i') AS end,
+        m.status,
+        (SELECT CONCAT('[', GROUP_CONCAT(JSON_OBJECT("name", u.name, "photo", u.photo) SEPARATOR '，'), ']')
+        FROM tb_user u
+        WHERE JSON_CONTAINS(m.present, CAST(u.id AS char))) AS present,
+        (SELECT CONCAT('[', GROUP_CONCAT(JSON_OBJECT("name", u.name, "photo", u.photo) SEPARATOR '，'), ']')
+        FROM tb_user u
+        WHERE JSON_CONTAINS(m.unpresent, CAST(u.id AS char))) AS unpresent
         FROM tb_meeting m
         WHERE m.id = #{id}
     </select>
