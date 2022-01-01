@@ -1,4 +1,4 @@
-package com.mumu.emos.api.controller;
+package com.mumu.emos.api.controller.form;
 
 import lombok.Data;
 
