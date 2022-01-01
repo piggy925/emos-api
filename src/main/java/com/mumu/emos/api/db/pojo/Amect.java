@@ -7,6 +7,9 @@ import java.util.Date;
 
 /**
  * 罚金表
+ *
+ * @author mumu
+ * @date 2022/1/1
  */
 @Data
 public class Amect {

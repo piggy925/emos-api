@@ -1,21 +1,68 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.mumu.emos.api.db.dao.AmectMapper">
-    <resultMap id="BaseResultMap" type="com.mumu.emos.api.db.pojo.Amect">
-        <!--@mbg.generated-->
-        <!--@Table tb_amect-->
-        <id column="id" jdbcType="INTEGER" property="id"/>
-        <result column="uuid" jdbcType="VARCHAR" property="uuid"/>
-        <result column="user_id" jdbcType="INTEGER" property="userId"/>
-        <result column="amount" jdbcType="DECIMAL" property="amount"/>
-        <result column="type_id" jdbcType="INTEGER" property="typeId"/>
-        <result column="reason" jdbcType="VARCHAR" property="reason"/>
-        <result column="prepay_id" jdbcType="VARCHAR" property="prepayId"/>
-        <result column="status" jdbcType="TINYINT" property="status"/>
-        <result column="create_time" jdbcType="TIMESTAMP" property="createTime"/>
-    </resultMap>
-    <sql id="Base_Column_List">
-        <!--@mbg.generated-->
-        id, uuid, user_id, amount, type_id, reason, prepay_id, `status`, create_time
-    </sql>
+    <select id="searchAmectByPage" parameterType="hashmap" resultType="hashmap">
+        SELECT a.id,
+        a.uuid,
+        u.name,
+        d.dept_name AS deptName,
+        a.amount,
+        a.reason,
+        at.type,
+        a.status,
+        DATE_FORMAT(a.create_time, '%Y-%m-%d %H:%i') AS createTime,
+        IF(a.user_id = #{currentUserId}, 'true', 'false') AS mine
+        FROM tb_amect a
+        JOIN tb_amect_type at ON a.type_id = at.id
+        JOIN tb_user u ON a.user_id = u.id
+        JOIN tb_dept d ON u.dept_id = d.id
+        WHERE 1 = 1
+        <if test="userId != null">
+            AND u.id = #{userId}
+        </if>
+        <if test="name != null">
+            AND u.name LIKE '%${name}%'
+        </if>
+        <if test="deptId != null">
+            AND u.dept_id = #{deptId}
+        </if>
+        <if test="typeId != null">
+            AND at.id = #{typeId}
+        </if>
+        <if test="startDate != null &amp; endDate != null">
+            AND a.create_time BETWEEN #{startDate} AND #{endDate}
+        </if>
+        <if test="status != null">
+            AND a.`status` = #{status}
+        </if>
+        ORDER BY a.id DESC
+        LIMIT #{start}, #{length}
+    </select>
+
+    <select id="searchAmectCount" parameterType="hashmap" resultType="long">
+        SELECT COUNT(*)
+        FROM tb_amect a
+        JOIN tb_amect_type at ON a.type_id = at.id
+        JOIN tb_user u ON a.user_id = u.id
+        JOIN tb_dept d ON u.dept_id = d.id
+        WHERE 1 = 1
+        <if test="userId != null">
+            AND u.id = #{userId}
+        </if>
+        <if test="name != null">
+            AND u.name LIKE '%${name}%'
+        </if>
+        <if test="deptId != null">
+            AND u.dept_id = #{deptId}
+        </if>
+        <if test="typeId != null">
+            AND at.id = #{typeId}
+        </if>
+        <if test="startDate != null &amp; endDate != null">
+            AND a.create_time BETWEEN #{startDate} AND #{endDate}
+        </if>
+        <if test="status != null">
+            AND a.`status` = #{status}
+        </if>
+    </select>
 </mapper>

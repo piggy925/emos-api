@@ -1,9 +1,13 @@
-package com.mumu.emos.api.db.dao;
+package com.mumu.emos.api.service;
 
 import com.mumu.emos.api.db.pojo.AmectType;
 
 import java.util.ArrayList;
 
-public interface AmectTypeMapper {
+/**
+ * @author mumu
+ * @date 2022/1/1
+ */
+public interface AmectTypeService {
     ArrayList<AmectType> searchAllAmectType();
 }
