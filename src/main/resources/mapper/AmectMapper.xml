@@ -65,4 +65,14 @@
             AND a.`status` = #{status}
         </if>
     </select>
+
+    <insert id="insert" parameterType="com.mumu.emos.api.db.pojo.Amect">
+        INSERT INTO tb_amect
+        SET uuid = #{uuid},
+        user_id = #{userId},
+        amount = #{amount},
+        reason = #{reason},
+        type_id = #{typeId},
+        status = 1
+    </insert>
 </mapper>

@@ -1,11 +1,16 @@
 package com.mumu.emos.api.controller;
 
 import cn.dev33.satoken.annotation.SaCheckLogin;
+import cn.dev33.satoken.annotation.SaCheckPermission;
+import cn.dev33.satoken.annotation.SaMode;
 import cn.dev33.satoken.stp.StpUtil;
+import cn.hutool.core.util.IdUtil;
 import cn.hutool.json.JSONUtil;
 import com.mumu.emos.api.common.util.PageUtils;
 import com.mumu.emos.api.common.util.R;
+import com.mumu.emos.api.controller.form.InsertAmectForm;
 import com.mumu.emos.api.controller.form.SearchAmectByPageForm;
+import com.mumu.emos.api.db.pojo.Amect;
 import com.mumu.emos.api.service.AmectService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -17,6 +22,8 @@ import org.springframework.web.bind.annotation.RestController;
 
 import javax.annotation.Resource;
 import javax.validation.Valid;
+import java.math.BigDecimal;
+import java.util.ArrayList;
 import java.util.HashMap;
 
 /**
@@ -52,5 +59,23 @@ public class AmectController {
         }
         PageUtils pageUtils = amectService.searchAmectByPage(param);
         return R.ok().put("page", pageUtils);
+    }
+
+    @Operation(summary = "新增罚款记录")
+    @PostMapping("/insert")
+    @SaCheckPermission(value = {"AMECT:INSERT", "ROOT"}, mode = SaMode.OR)
+    public R insert(@Valid @RequestBody InsertAmectForm form) {
+        ArrayList<Amect> list = new ArrayList<>();
+        for (Integer userId : form.getUserId()) {
+            Amect amect = new Amect();
+            amect.setAmount(new BigDecimal(form.getAmount()));
+            amect.setTypeId(form.getTypeId());
+            amect.setUserId(userId);
+            amect.setReason(form.getReason());
+            amect.setUuid(IdUtil.simpleUUID());
+            list.add(amect);
+        }
+        int rows = amectService.insert(list);
+        return R.ok().put("rows", rows);
     }
 }

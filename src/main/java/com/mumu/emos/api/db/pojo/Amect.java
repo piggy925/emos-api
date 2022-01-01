@@ -36,7 +36,7 @@ public class Amect {
     /**
      * 罚款类型
      */
-    private Integer typeId;
+    private Byte typeId;
 
     /**
      * 罚款原因
