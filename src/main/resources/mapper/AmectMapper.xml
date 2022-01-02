@@ -75,4 +75,23 @@
         type_id = #{typeId},
         status = 1
     </insert>
+
+    <select id="searchById" parameterType="int" resultType="java.util.HashMap">
+        SELECT uuid,
+        user_id AS userId,
+        amount,
+        type_id AS typeId,
+        reason
+        FROM tb_amect
+        WHERE id = #{id}
+    </select>
+
+    <update id="update">
+        UPDATE tb_amect
+        SET amount = #{amount},
+        type_id = #{typeId},
+        reason = #{reason}
+        WHERE id = #{id}
+        AND status != 2
+    </update>
 </mapper>

@@ -12,6 +12,11 @@ import java.util.HashMap;
  */
 public interface AmectService {
     PageUtils searchAmectByPage(HashMap param);
-    
+
     int insert(ArrayList<Amect> amect);
+
+
+    HashMap searchById(int id);
+
+    int update(HashMap param);
 }

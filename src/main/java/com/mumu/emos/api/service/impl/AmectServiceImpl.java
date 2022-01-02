@@ -38,4 +38,14 @@ public class AmectServiceImpl implements AmectService {
         amectList.forEach(amect -> amectMapper.insert(amect));
         return amectList.size();
     }
+
+    @Override
+    public HashMap searchById(int id) {
+        return amectMapper.searchById(id);
+    }
+
+    @Override
+    public int update(HashMap param) {
+        return amectMapper.update(param);
+    }
 }
