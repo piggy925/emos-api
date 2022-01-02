@@ -48,4 +48,9 @@ public class AmectServiceImpl implements AmectService {
     public int update(HashMap param) {
         return amectMapper.update(param);
     }
+
+    @Override
+    public int deleteAmectByIds(Integer[] ids) {
+        return amectMapper.deleteAmectByIds(ids);
+    }
 }

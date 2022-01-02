@@ -94,4 +94,14 @@
         WHERE id = #{id}
         AND status != 2
     </update>
+
+    <delete id="deleteAmectByIds">
+        DELETE
+        FROM tb_amect
+        WHERE status != 2
+        AND id IN
+        <foreach collection="array" item="one" separator="," open="(" close=")">
+            #{one}
+        </foreach>
+    </delete>
 </mapper>

@@ -19,4 +19,6 @@ public interface AmectMapper {
     HashMap searchById(int id);
 
     int update(HashMap param);
+
+    int deleteAmectByIds(Integer[] ids);
 }

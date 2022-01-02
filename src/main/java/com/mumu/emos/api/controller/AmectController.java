@@ -8,19 +8,13 @@ import cn.hutool.core.util.IdUtil;
 import cn.hutool.json.JSONUtil;
 import com.mumu.emos.api.common.util.PageUtils;
 import com.mumu.emos.api.common.util.R;
-import com.mumu.emos.api.controller.form.InsertAmectForm;
-import com.mumu.emos.api.controller.form.SearchAmectByIdForm;
-import com.mumu.emos.api.controller.form.SearchAmectByPageForm;
-import com.mumu.emos.api.controller.form.UpdateAmectForm;
+import com.mumu.emos.api.controller.form.*;
 import com.mumu.emos.api.db.pojo.Amect;
 import com.mumu.emos.api.service.AmectService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
 import javax.validation.Valid;
@@ -95,6 +89,14 @@ public class AmectController {
     public R update(@Valid @RequestBody UpdateAmectForm form) {
         HashMap param = JSONUtil.parse(form).toBean(HashMap.class);
         int rows = amectService.update(param);
+        return R.ok().put("rows", rows);
+    }
+
+    @DeleteMapping("/deleteAmectByIds")
+    @Operation(summary = "删除罚款记录")
+    @SaCheckPermission(value = {"ROOT", "AMECT:DELETE"}, mode = SaMode.OR)
+    public R delete(@Valid @RequestBody DeleteAmectByIdsForm form) {
+        int rows = amectService.deleteAmectByIds(form.getIds());
         return R.ok().put("rows", rows);
     }
 }
