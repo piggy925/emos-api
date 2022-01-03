@@ -21,4 +21,6 @@ public interface AmectService {
     int update(HashMap param);
 
     int deleteAmectByIds(Integer[] ids);
+
+    String createNativeAmectPayOrder(HashMap param);
 }

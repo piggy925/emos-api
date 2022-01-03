@@ -21,4 +21,8 @@ public interface AmectMapper {
     int update(HashMap param);
 
     int deleteAmectByIds(Integer[] ids);
+
+    HashMap selectAmectByCondition(HashMap param);
+
+    int updatePrepayId(HashMap param);
 }

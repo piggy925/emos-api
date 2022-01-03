@@ -99,4 +99,18 @@ public class AmectController {
         int rows = amectService.deleteAmectByIds(form.getIds());
         return R.ok().put("rows", rows);
     }
+
+    @PostMapping("/createNativeAmectPayOrder")
+    @Operation(summary = "创建罚款支付订单")
+    @SaCheckLogin
+    public R createNativeAmectPayOrder(@Valid @RequestBody CreateNativeAmectPayOrderForm form) {
+        int amectId = form.getAmectId();
+        int userId = StpUtil.getLoginIdAsInt();
+        HashMap param = new HashMap() {{
+            put("amectId", amectId);
+            put("userId", userId);
+        }};
+        String qrCodeBase64 = amectService.createNativeAmectPayOrder(param);
+        return R.ok().put("qrCodeBase64", qrCodeBase64);
+    }
 }
