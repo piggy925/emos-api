@@ -121,4 +121,10 @@
         WHERE id = #{amectId}
         AND status = 1
     </update>
+
+    <update id="updateStatus" parameterType="hashmap">
+        UPDATE tb_amect
+        SET status = #{status}
+        WHERE uuid = #{uuid}
+    </update>
 </mapper>

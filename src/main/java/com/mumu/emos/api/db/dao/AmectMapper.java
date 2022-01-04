@@ -25,4 +25,6 @@ public interface AmectMapper {
     HashMap selectAmectByCondition(HashMap param);
 
     int updatePrepayId(HashMap param);
+
+    int updateStatus(HashMap param);
 }

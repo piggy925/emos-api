@@ -79,7 +79,7 @@ public class AmectServiceImpl implements AmectService {
                 orderMap.put("out_trade_no", MapUtil.getStr(map, "uuid"));
                 orderMap.put("total_fee", amount);
                 orderMap.put("spbill_create_ip", "127.0.0.1");
-                orderMap.put("notify_url", "http://s10.z100.vip:22679/emos-api/amect/recieveMessage");
+                orderMap.put("notify_url", "http://s10.z100.vip:22679/emos-api/amect/receiveMessage");
                 orderMap.put("trade_type", "NATIVE");
 
                 String sign = WXPayUtil.generateSignature(orderMap, myWXPayConfig.getKey());
@@ -114,5 +114,10 @@ public class AmectServiceImpl implements AmectService {
         } else {
             throw new EmosException("没有找到罚款单");
         }
+    }
+
+    @Override
+    public int updateStatus(HashMap param) {
+        return amectMapper.updateStatus(param);
     }
 }

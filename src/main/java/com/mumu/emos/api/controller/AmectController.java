@@ -11,16 +11,25 @@ import com.mumu.emos.api.common.util.R;
 import com.mumu.emos.api.controller.form.*;
 import com.mumu.emos.api.db.pojo.Amect;
 import com.mumu.emos.api.service.AmectService;
+import com.mumu.emos.api.wxpay.WXPayUtil;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
+import java.io.BufferedReader;
+import java.io.BufferedWriter;
+import java.io.Reader;
+import java.io.Writer;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Map;
 
 /**
  * @author mumu
@@ -31,6 +40,9 @@ import java.util.HashMap;
 @Tag(name = "AmectController", description = "罚款Web接口")
 @Slf4j
 public class AmectController {
+    @Value("${wx.key}")
+    private String key;
+
     @Resource
     private AmectService amectService;
 
@@ -112,5 +124,52 @@ public class AmectController {
         }};
         String qrCodeBase64 = amectService.createNativeAmectPayOrder(param);
         return R.ok().put("qrCodeBase64", qrCodeBase64);
+    }
+
+    @RequestMapping("/receiveMessage")
+    @Operation(summary = "接收消息通知")
+    public void receiveMessage(HttpServletRequest request, HttpServletResponse response) throws Exception {
+        request.setCharacterEncoding("UTF-8");
+        Reader reader = request.getReader();
+        BufferedReader buffer = new BufferedReader(reader);
+        String line = buffer.readLine();
+        StringBuffer temp = new StringBuffer();
+        while (line != null) {
+            temp.append(line);
+            line = buffer.readLine();
+        }
+        buffer.close();
+        reader.close();
+        String xml = temp.toString();
+        if (WXPayUtil.isSignatureValid(xml, key)) {
+            Map<String, String> map = WXPayUtil.xmlToMap(xml);
+            String resultCode = map.get("result_code");
+            String returnCode = map.get("return_code");
+            if ("SUCCESS".equals(resultCode) && "SUCCESS".equals(returnCode)) {
+                String outTradeNo = map.get("out_trade_no");
+                HashMap param = new HashMap() {{
+                    put("status", 2);
+                    put("uuid", outTradeNo);
+                }};
+                int rows = amectService.updateStatus(param);
+                if (rows == 1) {
+                    // TODO 向前端页面推送付款结果
+
+                    response.setCharacterEncoding("UTF-8");
+                    response.setContentType("application/xml");
+                    Writer writer = response.getWriter();
+                    BufferedWriter bufferedWriter = new BufferedWriter(writer);
+                    bufferedWriter.write("<xml><return_code><![CDATA[SUCCESS]]></return_code> <return_msg><![CDATA[OK]]></return_msg></xml>");
+                    bufferedWriter.close();
+                    writer.close();
+                } else {
+                    log.error("更新订单状态失败");
+                    response.sendError(500, "更新订单状态失败");
+                }
+            } else {
+                log.error("数字签名异常");
+                response.sendError(500, "数字签名异常");
+            }
+        }
     }
 }
