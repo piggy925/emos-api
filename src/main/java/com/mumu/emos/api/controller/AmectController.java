@@ -11,6 +11,7 @@ import com.mumu.emos.api.common.util.R;
 import com.mumu.emos.api.controller.form.*;
 import com.mumu.emos.api.db.pojo.Amect;
 import com.mumu.emos.api.service.AmectService;
+import com.mumu.emos.api.websocket.WebSocketService;
 import com.mumu.emos.api.wxpay.WXPayUtil;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -153,7 +154,9 @@ public class AmectController {
                 }};
                 int rows = amectService.updateStatus(param);
                 if (rows == 1) {
-                    // TODO 向前端页面推送付款结果
+                    // 向前端页面推送付款结果
+                    int userId = amectService.searchUserIdByUUID(outTradeNo);
+                    WebSocketService.sendInfo("收款成功", userId + "");
 
                     response.setCharacterEncoding("UTF-8");
                     response.setContentType("application/xml");

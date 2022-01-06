@@ -27,4 +27,6 @@ public interface AmectMapper {
     int updatePrepayId(HashMap param);
 
     int updateStatus(HashMap param);
+
+    int searchUserIdByUUID(String uuid);
 }

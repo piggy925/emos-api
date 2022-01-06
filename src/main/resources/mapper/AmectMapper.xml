@@ -127,4 +127,10 @@
         SET status = #{status}
         WHERE uuid = #{uuid}
     </update>
+
+    <select id="searchUserIdByUUID" parameterType="string" resultType="int">
+        SELECT user_id
+        FROM tb_amect
+        WHERE uuid = #{uuid}
+    </select>
 </mapper>

@@ -25,4 +25,6 @@ public interface AmectService {
     String createNativeAmectPayOrder(HashMap param);
 
     int updateStatus(HashMap param);
+
+    int searchUserIdByUUID(String uuid);
 }

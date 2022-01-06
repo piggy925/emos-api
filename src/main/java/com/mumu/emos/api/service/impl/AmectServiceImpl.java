@@ -120,4 +120,9 @@ public class AmectServiceImpl implements AmectService {
     public int updateStatus(HashMap param) {
         return amectMapper.updateStatus(param);
     }
+
+    @Override
+    public int searchUserIdByUUID(String uuid) {
+        return amectMapper.searchUserIdByUUID(uuid);
+    }
 }
