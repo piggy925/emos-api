@@ -6,8 +6,10 @@ import cn.hutool.core.util.StrUtil;
 import cn.hutool.json.JSONObject;
 import cn.hutool.json.JSONUtil;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.stereotype.Component;
 
 import javax.websocket.*;
+import javax.websocket.server.ServerEndpoint;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
@@ -16,6 +18,8 @@ import java.util.concurrent.ConcurrentHashMap;
  * @date 2022/1/5
  */
 @Slf4j
+@ServerEndpoint(value = "/socket")
+@Component
 public class WebSocketService {
     public static ConcurrentHashMap<String, Session> sessionMap = new ConcurrentHashMap<>();
 
@@ -43,13 +47,13 @@ public class WebSocketService {
         String token = json.getStr("token");
         String userId = StpUtil.stpLogic.getLoginIdByToken(token).toString();
         Map map = session.getUserProperties();
-        if (!map.containsKey("userId")) {
-            map.put("userId", userId);
+        if (!map.containsKey(userId)) {
+            map.put(userId, userId);
         }
-        if (sessionMap.containsKey("userId")) {
-            sessionMap.replace("userId", session);
+        if (sessionMap.containsKey(userId)) {
+            sessionMap.replace(userId, session);
         } else {
-            sessionMap.put("userId", session);
+            sessionMap.put(userId, session);
         }
         sendInfo("ok", userId);
     }
