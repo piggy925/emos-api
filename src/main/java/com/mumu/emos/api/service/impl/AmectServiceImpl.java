@@ -125,4 +125,38 @@ public class AmectServiceImpl implements AmectService {
     public int searchUserIdByUUID(String uuid) {
         return amectMapper.searchUserIdByUUID(uuid);
     }
+
+    @Override
+    public void searchNativeAmectPayResult(HashMap param) {
+        HashMap map = amectMapper.selectAmectByCondition(param);
+        if (MapUtil.isNotEmpty(map)) {
+            String uuid = MapUtil.getStr(map, "uuid");
+            HashMap signParam = new HashMap() {{
+                put("appid", myWXPayConfig.getAppID());
+                put("mch_id", myWXPayConfig.getMchID());
+                put("out_trade_no", uuid);
+                put("nonce_str", WXPayUtil.generateNonceStr());
+            }};
+            try {
+                String sign = WXPayUtil.generateSignature(signParam, myWXPayConfig.getKey());
+                signParam.put("sign", sign);
+                WXPay wxPay = new WXPay(myWXPayConfig);
+                Map<String, String> result = wxPay.orderQuery(signParam);
+                String resultCode = result.get("result_code");
+                String returnCode = result.get("return_code");
+                if ("SUCCESS".equals(resultCode) && "SUCCESS".equals(returnCode)) {
+                    String tradeState = result.get("trade_state");
+                    if ("SUCCESS".equals(tradeState)) {
+                        amectMapper.updateStatus(new HashMap() {{
+                            put("uuid", uuid);
+                            put("status", 2);
+                        }});
+                    }
+                }
+            } catch (Exception e) {
+                log.error("执行异常", e);
+                throw new EmosException("执行异常");
+            }
+        }
+    }
 }

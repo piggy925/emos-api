@@ -175,4 +175,19 @@ public class AmectController {
             }
         }
     }
+
+    @PostMapping("/searchNativeAmectPayResult")
+    @Operation(summary = "查询Native支付罚款订单结果")
+    @SaCheckLogin
+    public R searchNativeAmectPayResult(@Valid @RequestBody SearchNativeAmectPayResultForm form) {
+        int userId = StpUtil.getLoginIdAsInt();
+        int amectId = form.getAmectId();
+        HashMap param = new HashMap() {{
+            put("amectId", amectId);
+            put("userId", userId);
+            put("status", 1);
+        }};
+        amectService.searchNativeAmectPayResult(param);
+        return R.ok();
+    }
 }
