@@ -1,5 +1,6 @@
 package com.mumu.emos.api.service.impl;
 
+import cn.hutool.core.date.DateUtil;
 import cn.hutool.core.map.MapUtil;
 import cn.hutool.extra.qrcode.QrCodeUtil;
 import cn.hutool.extra.qrcode.QrConfig;
@@ -18,6 +19,7 @@ import org.springframework.transaction.annotation.Transactional;
 import javax.annotation.Resource;
 import java.math.BigDecimal;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -158,5 +160,53 @@ public class AmectServiceImpl implements AmectService {
                 throw new EmosException("执行异常");
             }
         }
+    }
+
+    @Override
+    public HashMap searchChart(HashMap param) {
+        ArrayList<HashMap> chart_1 = amectMapper.searchChart_1(param);
+        ArrayList<HashMap> chart_2 = amectMapper.searchChart_2(param);
+        ArrayList<HashMap> chart_3 = amectMapper.searchChart_3(param);
+        param.clear();
+        int year = DateUtil.year(new Date());
+        param.put("year", year);
+        param.put("status", 1);
+        ArrayList<HashMap> list_1 = amectMapper.searchChart_4(param);
+        param.replace("status", 2);
+        ArrayList<HashMap> list_2 = amectMapper.searchChart_4(param);
+
+        ArrayList<HashMap> chart_4_1 = new ArrayList<>();
+        ArrayList<HashMap> chart_4_2 = new ArrayList<>();
+        for (int i = 1; i <= 12; i++) {
+            HashMap map = new HashMap();
+            map.put("month", i);
+            map.put("ct", 0);
+            chart_4_1.add(map);
+            chart_4_2.add((HashMap) map.clone());
+        }
+        list_1.forEach(one -> {
+            chart_4_1.forEach(temp -> {
+                if (MapUtil.getInt(one, "month") == MapUtil.getInt(temp, "month")) {
+                    temp.replace("ct", MapUtil.getInt(one, "ct"));
+                }
+            });
+        });
+
+        list_2.forEach(one -> {
+            chart_4_2.forEach(temp -> {
+                if (MapUtil.getInt(one, "month") == MapUtil.getInt(temp, "month")) {
+                    temp.replace("ct", MapUtil.getInt(one, "ct"));
+                }
+            });
+        });
+
+        HashMap map = new HashMap() {{
+            put("chart_1", chart_1);
+            put("chart_2", chart_2);
+            put("chart_3", chart_3);
+            put("chart_4_1", chart_4_1);
+            put("chart_4_2", chart_4_2);
+        }};
+        return map;
     }
 }

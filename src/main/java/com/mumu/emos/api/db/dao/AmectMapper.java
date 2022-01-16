@@ -29,4 +29,12 @@ public interface AmectMapper {
     int updateStatus(HashMap param);
 
     int searchUserIdByUUID(String uuid);
+
+    ArrayList<HashMap> searchChart_1(HashMap param);
+
+    ArrayList<HashMap> searchChart_2(HashMap param);
+
+    ArrayList<HashMap> searchChart_3(HashMap param);
+
+    ArrayList<HashMap> searchChart_4(HashMap param);
 }

@@ -29,4 +29,6 @@ public interface AmectService {
     int searchUserIdByUUID(String uuid);
 
     void searchNativeAmectPayResult(HashMap param);
+
+    HashMap searchChart(HashMap param);
 }

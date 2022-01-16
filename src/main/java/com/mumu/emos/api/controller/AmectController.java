@@ -190,4 +190,13 @@ public class AmectController {
         amectService.searchNativeAmectPayResult(param);
         return R.ok();
     }
+    
+    @PostMapping("/searchChart")
+    @Operation(summary = "查询Chart图表")
+    @SaCheckPermission(value = {"ROOT", "AMECT:SELECT"}, mode = SaMode.OR)
+    public R searchChart(@Valid @RequestBody SearchChartForm form) {
+        HashMap param = JSONUtil.parse(form).toBean(HashMap.class);
+        HashMap map = amectService.searchChart(param);
+        return R.ok(map);
+    }
 }
