@@ -8,4 +8,35 @@
                systemic
         FROM tb_amect_type
     </select>
+
+    <select id="searchAmectTypeByPage" parameterType="HashMap" resultType="HashMap">
+        SELECT `at`.id,
+        `at`.type,
+        `at`.money,
+        `at`.systemic,
+        COUNT( a.type_id ) AS notPay,
+        IF(COUNT(a.id)=0 AND systemic=false ,"true","false") AS canDelete
+        FROM tb_amect_type `at`
+        LEFT JOIN tb_amect a ON `at`.id = a.type_id AND a.`status` = 1
+        WHERE 1=1
+        <if test="type != null">
+            AND `at`.type LIKE '%${type}%'
+        </if>
+        GROUP BY `at`.id
+        LIMIT #{start}, #{length}
+    </select>
+    
+    <select id="searchAmectTypeCount" parameterType="HashMap" resultType="long">
+        SELECT COUNT(temp.ct)
+        FROM (
+        SELECT COUNT(*) AS ct
+        FROM tb_amect_type `at`
+        LEFT JOIN tb_amect a ON `at`.id = a.type_id AND a.`status` = 1
+        WHERE 1=1
+        <if test="type != null">
+            AND `at`.type LIKE '%${type}%'
+        </if>
+        GROUP BY `at`.id
+        ) temp
+    </select>
 </mapper>

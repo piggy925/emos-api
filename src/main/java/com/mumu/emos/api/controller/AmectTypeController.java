@@ -1,17 +1,21 @@
 package com.mumu.emos.api.controller;
 
 import cn.dev33.satoken.annotation.SaCheckLogin;
+import cn.dev33.satoken.annotation.SaCheckPermission;
+import cn.hutool.json.JSONUtil;
+import com.mumu.emos.api.common.util.PageUtils;
 import com.mumu.emos.api.common.util.R;
+import com.mumu.emos.api.controller.form.SearchAmectTypeByPageForm;
 import com.mumu.emos.api.db.pojo.AmectType;
 import com.mumu.emos.api.service.AmectTypeService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
+import javax.validation.Valid;
 import java.util.ArrayList;
+import java.util.HashMap;
 
 /**
  * @author mumu
@@ -30,5 +34,18 @@ public class AmectTypeController {
     public R searchAllAmectType() {
         ArrayList<AmectType> list = amectTypeService.searchAllAmectType();
         return R.ok().put("list", list);
+    }
+
+    @PostMapping("/searchAmectTypeByPage")
+    @Operation(summary = "查询罚款类型分页记录")
+    @SaCheckPermission(value = {"ROOT"})
+    public R searchAmectTypeByPage(@Valid @RequestBody SearchAmectTypeByPageForm form) {
+        int page = form.getPage();
+        int length = form.getLength();
+        int start = (page - 1) * length;
+        HashMap param = JSONUtil.parse(form).toBean(HashMap.class);
+        param.put("start", start);
+        PageUtils pageUtils = amectTypeService.searchAmectTypeByPage(param);
+        return R.ok().put("page", pageUtils);
     }
 }
