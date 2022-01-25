@@ -50,4 +50,9 @@ public class AmectTypeServiceImpl implements AmectTypeService {
     public int update(HashMap param) {
         return amectTypeMapper.update(param);
     }
+
+    @Override
+    public int deleteAmectTypeByIds(Integer[] ids) {
+        return amectTypeMapper.deleteAmectTypeByIds(ids);
+    }
 }

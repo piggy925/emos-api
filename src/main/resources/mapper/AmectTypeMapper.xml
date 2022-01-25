@@ -61,4 +61,12 @@
         money = #{money}
         WHERE id = #{id}
     </update>
+
+    <delete id="deleteAmectTypeByIds">
+        DELETE FROM tb_amect_type
+        WHERE systemic = false AND id IN
+        <foreach collection="array" open="(" separator="," close=")" item="one">
+            #{one}
+        </foreach>
+    </delete>
 </mapper>

@@ -5,10 +5,7 @@ import cn.dev33.satoken.annotation.SaCheckPermission;
 import cn.hutool.json.JSONUtil;
 import com.mumu.emos.api.common.util.PageUtils;
 import com.mumu.emos.api.common.util.R;
-import com.mumu.emos.api.controller.form.InsertAmectTypeForm;
-import com.mumu.emos.api.controller.form.SearchAmectTypeByIdForm;
-import com.mumu.emos.api.controller.form.SearchAmectTypeByPageForm;
-import com.mumu.emos.api.controller.form.UpdateAmectTypeByIdForm;
+import com.mumu.emos.api.controller.form.*;
 import com.mumu.emos.api.db.pojo.AmectType;
 import com.mumu.emos.api.service.AmectTypeService;
 import io.swagger.v3.oas.annotations.Operation;
@@ -75,6 +72,14 @@ public class AmectTypeController {
     public R update(@Valid @RequestBody UpdateAmectTypeByIdForm form) {
         HashMap param = JSONUtil.parse(form).toBean(HashMap.class);
         int rows = amectTypeService.update(param);
+        return R.ok().put("rows", rows);
+    }
+
+    @PostMapping("/deleteAmectTypeByIds")
+    @Operation(summary = "删除罚款类型")
+    @SaCheckPermission(value = {"ROOT"})
+    public R deleteAmectTypeByIds(@Valid @RequestBody DeleteAmectTypeByIdsForm form) {
+        int rows = amectTypeService.deleteAmectTypeByIds(form.getIds());
         return R.ok().put("rows", rows);
     }
 }
