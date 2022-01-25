@@ -39,4 +39,11 @@
         GROUP BY `at`.id
         ) temp
     </select>
+
+    <insert id="insert" parameterType="com.mumu.emos.api.db.pojo.AmectType">
+        INSERT INTO tb_amect_type
+        SET type = #{type},
+        money = #{money},
+        systemic = false
+    </insert>
 </mapper>

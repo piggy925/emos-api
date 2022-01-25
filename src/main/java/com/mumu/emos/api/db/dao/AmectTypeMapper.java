@@ -11,4 +11,6 @@ public interface AmectTypeMapper {
     ArrayList<HashMap> searchAmectTypeByPage(HashMap param);
 
     long searchAmectTypeCount(HashMap param);
+
+    int insert(AmectType amectType);
 }

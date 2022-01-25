@@ -5,6 +5,7 @@ import cn.dev33.satoken.annotation.SaCheckPermission;
 import cn.hutool.json.JSONUtil;
 import com.mumu.emos.api.common.util.PageUtils;
 import com.mumu.emos.api.common.util.R;
+import com.mumu.emos.api.controller.form.InsertAmectTypeForm;
 import com.mumu.emos.api.controller.form.SearchAmectTypeByPageForm;
 import com.mumu.emos.api.db.pojo.AmectType;
 import com.mumu.emos.api.service.AmectTypeService;
@@ -47,5 +48,14 @@ public class AmectTypeController {
         param.put("start", start);
         PageUtils pageUtils = amectTypeService.searchAmectTypeByPage(param);
         return R.ok().put("page", pageUtils);
+    }
+
+    @PostMapping("/insert")
+    @Operation(summary = "添加罚款类型")
+    @SaCheckPermission(value = {"ROOT"})
+    public R insert(@Valid @RequestBody InsertAmectTypeForm form) {
+        AmectType amectType = JSONUtil.parse(form).toBean(AmectType.class);
+        int rows = amectTypeService.insert(amectType);
+        return R.ok().put("rows", rows);
     }
 }

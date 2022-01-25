@@ -34,4 +34,9 @@ public class AmectTypeServiceImpl implements AmectTypeService {
         PageUtils pageUtils = new PageUtils(list, count, start, length);
         return pageUtils;
     }
+
+    @Override
+    public int insert(AmectType amectType) {
+        return amectTypeMapper.insert(amectType);
+    }
 }
