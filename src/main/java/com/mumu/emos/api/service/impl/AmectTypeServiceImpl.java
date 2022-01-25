@@ -39,4 +39,15 @@ public class AmectTypeServiceImpl implements AmectTypeService {
     public int insert(AmectType amectType) {
         return amectTypeMapper.insert(amectType);
     }
+
+    @Override
+    public HashMap searchById(int id) {
+        HashMap map = amectTypeMapper.searchById(id);
+        return map;
+    }
+
+    @Override
+    public int update(HashMap param) {
+        return amectTypeMapper.update(param);
+    }
 }

@@ -46,4 +46,19 @@
         money = #{money},
         systemic = false
     </insert>
+
+    <select id="searchById" parameterType="int" resultType="HashMap">
+        SELECT `type`,
+        money,
+        systemic
+        FROM tb_amect_type
+        WHERE id = #{id}
+    </select>
+
+    <update id="update" parameterType="HashMap">
+        UPDATE tb_amect_type
+        SET type = #{type},
+        money = #{money}
+        WHERE id = #{id}
+    </update>
 </mapper>

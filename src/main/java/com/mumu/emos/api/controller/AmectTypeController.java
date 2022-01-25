@@ -6,7 +6,9 @@ import cn.hutool.json.JSONUtil;
 import com.mumu.emos.api.common.util.PageUtils;
 import com.mumu.emos.api.common.util.R;
 import com.mumu.emos.api.controller.form.InsertAmectTypeForm;
+import com.mumu.emos.api.controller.form.SearchAmectTypeByIdForm;
 import com.mumu.emos.api.controller.form.SearchAmectTypeByPageForm;
+import com.mumu.emos.api.controller.form.UpdateAmectTypeByIdForm;
 import com.mumu.emos.api.db.pojo.AmectType;
 import com.mumu.emos.api.service.AmectTypeService;
 import io.swagger.v3.oas.annotations.Operation;
@@ -56,6 +58,23 @@ public class AmectTypeController {
     public R insert(@Valid @RequestBody InsertAmectTypeForm form) {
         AmectType amectType = JSONUtil.parse(form).toBean(AmectType.class);
         int rows = amectTypeService.insert(amectType);
+        return R.ok().put("rows", rows);
+    }
+
+    @PostMapping("/searchById")
+    @Operation(summary = "根据ID查找罚款类型")
+    @SaCheckPermission(value = {"ROOT"})
+    public R searchById(@Valid @RequestBody SearchAmectTypeByIdForm form) {
+        HashMap map = amectTypeService.searchById(form.getId());
+        return R.ok(map);
+    }
+
+    @PostMapping("/update")
+    @Operation(summary = "更新罚款类型")
+    @SaCheckPermission(value = {"ROOT"})
+    public R update(@Valid @RequestBody UpdateAmectTypeByIdForm form) {
+        HashMap param = JSONUtil.parse(form).toBean(HashMap.class);
+        int rows = amectTypeService.update(param);
         return R.ok().put("rows", rows);
     }
 }

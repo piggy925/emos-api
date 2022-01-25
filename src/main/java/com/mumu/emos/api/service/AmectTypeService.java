@@ -16,4 +16,8 @@ public interface AmectTypeService {
     PageUtils searchAmectTypeByPage(HashMap param);
 
     int insert(AmectType amectType);
+
+    HashMap searchById(int id);
+
+    int update(HashMap param);
 }

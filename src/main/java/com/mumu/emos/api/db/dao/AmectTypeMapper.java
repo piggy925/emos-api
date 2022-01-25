@@ -13,4 +13,8 @@ public interface AmectTypeMapper {
     long searchAmectTypeCount(HashMap param);
 
     int insert(AmectType amectType);
+
+    HashMap searchById(int id);
+
+    int update(HashMap param);
 }
