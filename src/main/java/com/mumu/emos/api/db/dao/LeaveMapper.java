@@ -7,4 +7,6 @@ public interface LeaveMapper {
     ArrayList<HashMap> searchLeaveByPage(HashMap param);
 
     long searchLeaveCount(HashMap param);
+
+    int updateLeaveInstanceId(HashMap param);
 }

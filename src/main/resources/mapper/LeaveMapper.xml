@@ -84,4 +84,10 @@
             AND l.type = #{type}
         </if>
     </select>
+
+    <update id="updateLeaveInstanceId" parameterType="HashMap">
+        UPDATE tb_leave
+        SET instance_id = #{instanceId}
+        WHERE id = #{id}
+    </update>
 </mapper>
