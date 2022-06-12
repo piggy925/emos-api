@@ -31,8 +31,8 @@ public class LeaveWorkflowTask {
     @Value("${workflow.url}")
     private String workflow;
 
-    @Value("${emos.recieveNotify}")
-    private String recieveNotify;
+    @Value("${emos.receiveNotify}")
+    private String receiveNotify;
 
     @Resource
     private UserMapper userMapper;
@@ -44,7 +44,7 @@ public class LeaveWorkflowTask {
     public void startLeaveWorkflow(int id, int creatorId, String days) {
         HashMap info = userMapper.searchUserInfo(creatorId);
         JSONObject json = new JSONObject();
-        json.set("url", recieveNotify);
+        json.set("url", receiveNotify);
         json.set("creatorId", creatorId);
         json.set("creatorName", info.get("name").toString());
         json.set("code", code);

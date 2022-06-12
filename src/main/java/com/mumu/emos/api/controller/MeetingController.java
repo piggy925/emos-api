@@ -81,9 +81,9 @@ public class MeetingController {
         return R.ok().put("rows", rows);
     }
 
-    @PostMapping("/recieveNotify")
+    @PostMapping("/receiveNotify")
     @Operation(summary = "接收工作流通知")
-    public R recieveNotify(@Valid @RequestBody RecieveNotifyForm form) {
+    public R receiveNotify(@Valid @RequestBody ReceiveNotifyForm form) {
         if (form.getResult().equals("同意")) {
             log.debug(form.getUuid() + "的会议审批通过");
         } else {
